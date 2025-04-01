@@ -6,11 +6,15 @@
 /*   By: reda <reda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 09:28:34 by reda              #+#    #+#             */
-/*   Updated: 2025/03/27 09:37:52 by reda             ###   ########.fr       */
+/*   Updated: 2025/04/01 15:10:36 by reda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
+
+# include <pthread.h>
+# include <stdio.h> // -REMOVE-
+# include <unistd.h>
 
 #endif
