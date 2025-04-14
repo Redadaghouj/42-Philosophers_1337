@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reda <reda@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 09:28:34 by reda              #+#    #+#             */
-/*   Updated: 2025/04/01 15:10:36 by reda             ###   ########.fr       */
+/*   Updated: 2025/04/14 13:20:31 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,8 @@
 # include <pthread.h>
 # include <stdio.h> // -REMOVE-
 # include <unistd.h>
+
+# define EXIT_FAILURE 1
+# define EXIT_SUCCESS 0
 
 #endif

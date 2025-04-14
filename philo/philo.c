@@ -3,33 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reda <reda@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 09:28:08 by reda              #+#    #+#             */
-/*   Updated: 2025/04/01 16:05:51 by reda             ###   ########.fr       */
+/*   Updated: 2025/04/14 21:16:04 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*thread_function(void* arg) {
-	int id = *(int*)arg;
-	printf("Thread %d starting\n", id);
-	sleep(1);
-	printf("Thread %d ending\n", id);
-	return NULL;
+int counter = 0;
+// pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
+void* increment(void* arg) {
+    for (int i = 0; i < 100000; i++) {
+        // pthread_mutex_lock(&mutex); // Lock before modifying
+        counter++;
+        // pthread_mutex_unlock(&mutex); // Unlock after
+    }
+    return NULL;
 }
 
-int	main(void) {
-	pthread_t thread1, thread2;
-	int id1 = 1, id2 = 2;
-	
-	pthread_create(&thread1, NULL, thread_function, &id1);
-	pthread_create(&thread2, NULL, thread_function, &id2);
-	
-	pthread_join(thread1, NULL);
-	pthread_join(thread2, NULL);
-	
-	printf("All threads completed\n");
-	return (0);
+int	main(void)
+{
+    pthread_t t1, t2;
+    pthread_create(&t1, NULL, increment, NULL);
+    pthread_create(&t2, NULL, increment, NULL);
+
+    pthread_join(t1, NULL);
+    pthread_join(t2, NULL);
+
+    printf("Final counter: %d\n", counter);
+	return (EXIT_SUCCESS);
 }

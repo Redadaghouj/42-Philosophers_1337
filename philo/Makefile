@@ -7,18 +7,14 @@ RM := rm -f
 
 NAME := philo
 
-MANDO := philo
-
-OUTPUT := ${MANDO}/philo
-
-SRCS := ${MANDO}/philo.c
+SRCS := philo.c
 
 OBJS := ${SRCS:.c=.o}
 
 all: ${NAME}
 
-${NAME}: ${OBJS} ${MANDO}/philo.h
-	${CC} ${CFLAGS} ${OBJS} -o ${OUTPUT}
+${NAME}: ${OBJS} philo.h
+	${CC} ${CFLAGS} ${OBJS} -o ${NAME}
 
 %.o: %.c
 	${CC} ${CFLAGS} -c $< -o $@
@@ -27,7 +23,7 @@ clean:
 	@${RM} ${OBJS}
 
 fclean: clean
-	@${RM} ${OUTPUT}
+	@${RM} ${NAME}
 
 re: fclean all
 
