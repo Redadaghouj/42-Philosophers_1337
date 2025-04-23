@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/27 09:28:34 by reda              #+#    #+#             */
-/*   Updated: 2025/04/23 19:57:23 by mdaghouj         ###   ########.fr       */
+/*   Created: 2025/04/23 19:56:07 by mdaghouj          #+#    #+#             */
+/*   Updated: 2025/04/23 19:56:10 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#include "../philo.h"
 
-# include <pthread.h>
-# include <time.h>
-# include <stdio.h> // -REMOVE-
-# include <unistd.h>
+int	ft_strlen(const char *s)
+{
+	int	i;
 
-# define EXIT_FAILURE 1
-# define EXIT_SUCCESS 0
-
-/* UTILS */
-int	ft_strlen(const char *s);
-
-/* ERROR HANDLERS */
-int	print_error(char *msg);
-
-#endif
+	i = 0;
+	while (s[i] != '\0')
+		i++;
+	return (i);
+}

@@ -8,7 +8,12 @@ RM := rm -f
 
 NAME := philo
 
-SRCS := philo.c
+UTILS := utils
+
+ERR_HNDL := error_handlers
+
+SRCS := philo.c ${ERR_HNDL}/print_error.c ${UTILS}/ft_strlen.c
+
 
 OBJS := ${SRCS:.c=.o}
 
