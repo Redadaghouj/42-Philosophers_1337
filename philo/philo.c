@@ -6,22 +6,78 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 09:28:08 by reda              #+#    #+#             */
-/*   Updated: 2025/04/23 20:08:57 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/25 21:00:35 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int argc, char *argv[])
+void	init_shared_data(char *argv[], t_data *data, int must_eats)
 {
-	if (argc != 5 && argc != 6)
+	data->nbr_of_philos = ft_atoi(argv[0]);
+	data->time_to_die = ft_atoi(argv[1]);
+	data->time_to_eat = ft_atoi(argv[2]);
+	data->time_to_sleep = ft_atoi(argv[3]);
+	if (must_eats)
+		data->must_eats = ft_atoi(argv[4]);
+	else
+		data->must_eats = -1;
+}
+
+int	init_philo(t_philo **philo, t_data *data)
+{
+	int	i;
+
+	i = 0;
+	*philo = (t_philo *) malloc(sizeof(t_philo) * data->nbr_of_philos);
+	if (!(*philo))
+		return (EXIT_FAILURE);
+	memset(*philo, 0, sizeof(t_philo) * data->nbr_of_philos);
+	while (i < data->nbr_of_philos)
 	{
-		print_error("Error: Invalid number of arguments, Expected 4 or 5.\n");
+		(*philo)[i].data = data;
+		(*philo)[i].id = i + 1;
+		i++;
+	}
+	return (EXIT_SUCCESS);
+}
+
+int	setup_philos(t_data *data, t_philo **philo, int argc, char *argv[])
+{
+	if (parse_and_validate_args(argc - 1, argv + 1))
+	{
+		print_error("Error: At least one argument is not valid.\n");
+		return (EXIT_FAILURE);
+	}
+	init_shared_data(argv + 1, data, (argc == 6));
+	if (init_philo(philo, data))
+	{
+		print_error("Error: Malloc failed.\n");
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }
 
+int	main(int argc, char *argv[])
+{
+	t_data	data;
+	t_philo	*philo;
+
+	if (argc != 5 && argc != 6)
+	{
+		print_error("Error: Invalid number of arguments, Expected 5 or 6.\n");
+		return (EXIT_FAILURE);
+	}
+	if (setup_philos(&data, &philo, argv, argc))
+		return (EXIT_FAILURE);
+	if (start_simulation(&philo))
+	{
+		free(philo);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+// ./pipex 5 200 200 200
 // eating, sleeping, thinking
 // nbr_of_philos time_to_die time_to_eat time_to_sleep [nbr_of_times_each_philo_must_eat]
 //	5				200			200			200

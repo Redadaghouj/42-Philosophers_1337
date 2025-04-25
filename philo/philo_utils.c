@@ -1,22 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_error.c                                      :+:      :+:    :+:   */
+/*   philo_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/23 19:51:33 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/04/25 16:20:51 by mdaghouj         ###   ########.fr       */
+/*   Created: 2025/04/25 18:26:34 by mdaghouj          #+#    #+#             */
+/*   Updated: 2025/04/25 18:27:40 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo.h"
+#include "philo.h"
 
-int	print_error(char *msg)
+void	*free_buffer(char **buffer)
 {
-	int	len;
+	int	i;
 
-	len = ft_strlen(msg) + 1;
-	write(STDERR_FILENO, msg, len);
-	return (len);
+	i = 0;
+	while (buffer[i] != NULL)
+	{
+		free(buffer[i]);
+		i++;
+	}
+	free(buffer);
+	return (NULL);
 }

@@ -12,7 +12,7 @@ UTILS := utils
 
 ERR_HNDL := error_handlers
 
-SRCS := philo.c ${ERR_HNDL}/print_error.c ${UTILS}/ft_strlen.c
+SRCS := philo.c parsing.c ${ERR_HNDL}/print_error.c ${UTILS}/ft_strlen.c ${UTILS}/ft_atoi.c
 
 
 OBJS := ${SRCS:.c=.o}
