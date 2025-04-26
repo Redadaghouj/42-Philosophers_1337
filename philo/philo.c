@@ -6,18 +6,36 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 09:28:08 by reda              #+#    #+#             */
-/*   Updated: 2025/04/25 21:00:35 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/26 16:27:22 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+void	cleanup(t_philo **philo)
+{
+	pthread_mutex_destroy(&(*philo)->data->print);
+	if (*philo)
+		free(*philo);
+}
+
 void	init_shared_data(char *argv[], t_data *data, int must_eats)
 {
+	int	i;
+
+	i = 0;
 	data->nbr_of_philos = ft_atoi(argv[0]);
+	data->forks = (pthread_mutex_t *)malloc(data->nbr_of_philos
+			* sizeof(pthread_mutex_t));
 	data->time_to_die = ft_atoi(argv[1]);
 	data->time_to_eat = ft_atoi(argv[2]);
 	data->time_to_sleep = ft_atoi(argv[3]);
+	pthread_mutex_init(&data->print, NULL);
+	while (i < data->nbr_of_philos)
+	{
+		pthread_mutex_init(&data->forks[i], NULL);
+		i++;
+	}
 	if (must_eats)
 		data->must_eats = ft_atoi(argv[4]);
 	else
@@ -37,6 +55,8 @@ int	init_philo(t_philo **philo, t_data *data)
 	{
 		(*philo)[i].data = data;
 		(*philo)[i].id = i + 1;
+		(*philo)[i].left_fork = i;
+		(*philo)[i].right_fork = (i + 1) % data->nbr_of_philos;
 		i++;
 	}
 	return (EXIT_SUCCESS);
@@ -62,17 +82,22 @@ int	main(int argc, char *argv[])
 {
 	t_data	data;
 	t_philo	*philo;
+	int		err;
 
+	err = 0;
 	if (argc != 5 && argc != 6)
 	{
 		print_error("Error: Invalid number of arguments, Expected 5 or 6.\n");
 		return (EXIT_FAILURE);
 	}
-	if (setup_philos(&data, &philo, argv, argc))
-		return (EXIT_FAILURE);
-	if (start_simulation(&philo))
+	if (setup_philos(&data, &philo, argc, argv))
+		err = 1;
+	if (start_simulation(philo))
+		err = 1;
+	if (err)
 	{
-		free(philo);
+		print_error("Error: Something goes wrong.\n");
+		cleanup(&philo);
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

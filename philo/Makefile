@@ -10,9 +10,8 @@ NAME := philo
 
 UTILS := utils
 
-ERR_HNDL := error_handlers
-
-SRCS := philo.c parsing.c ${ERR_HNDL}/print_error.c ${UTILS}/ft_strlen.c ${UTILS}/ft_atoi.c
+SRCS := philo.c parsing.c simulation.c life_cycle.c error_handlers.c \
+		${UTILS}/ft_strlen.c ${UTILS}/ft_atoi.c \
 
 
 OBJS := ${SRCS:.c=.o}

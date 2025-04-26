@@ -6,23 +6,31 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 18:03:21 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/04/25 21:29:18 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/26 16:31:34 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-unsigned long get_time()
+t_timestamp	get_current_time(void)
 {
 	struct timeval	tv;
+	t_timestamp		miliseconds;
 
 	gettimeofday(&tv, NULL);
-	
+	miliseconds = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+	return (miliseconds);
 }
 
-void	think(t_philo *philo)
+void	print_state(t_philo *philo, char *state)
 {
-	printf("timestamp_in_ms X is thinking\n");
+	t_timestamp	time;
+
+	time = get_current_time() - philo->data->start_time;
+	pthread_mutex_lock(&philo->data->print);
+	printf("%ld %d %s \n", time, philo->id, state);
+	// fflush(stdout);
+	pthread_mutex_unlock(&philo->data->print);
 }
 
 void	*routine(void *arg)
@@ -30,32 +38,37 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
+	if (philo->id % 2 == 0)
+		usleep(1000);
 	while (1)
 	{
-		// think();
-		// pick_up_forks();
-		// eat();
-		// put_down_forks();
-		// sleep_philo();
+		pick_up_forks(philo);
+		eat(philo);
+		put_down_forks(philo);
+		sleep_philo(philo);
+		think(philo);
 	}
 	return (NULL);
 }
 
-int	start_simulation(t_philo **philo)
+int	start_simulation(t_philo *philo)
 {
-	pthread_t	*thread;
-	int			philos_nbr;
 	int			i;
+	int			philos_nbr;
 
-	philos_nbr = (*philo)->data->nbr_of_philos;
-	thread = (pthread_t *) malloc(sizeof(pthread_t) * philos_nbr);
-	if (!thread)
-		return (EXIT_FAILURE);
+	i = 0;
+	philos_nbr = philo->data->nbr_of_philos;
+	philo->data->start_time = get_current_time();
+	while (i < philos_nbr)
+	{
+		if (pthread_create(&philo[i].thread, NULL, routine, &philo[i]) != 0)
+			return (EXIT_FAILURE);
+		i++;
+	}
 	i = 0;
 	while (i < philos_nbr)
 	{
-		if (pthread_create(&thread[i], NULL, routine, philo) != 0)
-			return (EXIT_FAILURE);
+		pthread_join(philo[i].thread, NULL);
 		i++;
 	}
 	return (EXIT_SUCCESS);
@@ -67,4 +80,13 @@ int	start_simulation(t_philo **philo)
 	◦timestamp_in_ms X is sleeping
 	◦timestamp_in_ms X is thinking
 	◦timestamp_in_ms X died
+*/
+
+/*
+	while no philosopher has died:
+		think()
+		attempt_to_pick_up_forks()
+		eat() [update last_meal_time and meal_count]
+		put_down_forks()
+		sleep()
 */
