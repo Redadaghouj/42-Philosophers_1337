@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 18:03:21 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/04/26 16:31:34 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/26 16:52:53 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,10 @@ int	start_simulation(t_philo *philo)
 	while (i < philos_nbr)
 	{
 		if (pthread_create(&philo[i].thread, NULL, routine, &philo[i]) != 0)
+		{
+			print_error("Error: Failed to create threads.\n");			
 			return (EXIT_FAILURE);
+		}
 		i++;
 	}
 	i = 0;
