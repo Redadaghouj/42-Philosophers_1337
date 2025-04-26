@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 09:28:08 by reda              #+#    #+#             */
-/*   Updated: 2025/04/26 16:36:56 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/26 16:39:08 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,19 +94,13 @@ int	main(int argc, char *argv[])
 {
 	t_data	data;
 	t_philo	*philo;
-	int		err;
 
-	err = 0;
 	if (argc != 5 && argc != 6)
 	{
 		print_error("Error: Invalid number of arguments, Expected 5 or 6.\n");
 		return (EXIT_FAILURE);
 	}
-	if (setup_philos(&data, &philo, argc, argv))
-		err = 1;
-	if (start_simulation(philo))
-		err = 1;
-	if (err)
+	if (setup_philos(&data, &philo, argc, argv) || start_simulation(philo))
 	{
 		print_error("Error: Something goes wrong.\n");
 		cleanup(&philo);
