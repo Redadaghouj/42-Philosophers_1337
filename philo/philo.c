@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 09:28:08 by reda              #+#    #+#             */
-/*   Updated: 2025/04/26 16:27:22 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/26 16:36:56 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,21 @@
 
 void	cleanup(t_philo **philo)
 {
-	pthread_mutex_destroy(&(*philo)->data->print);
+	int	i;
+
+	i = 0;
 	if (*philo)
+	{
+		while (i < (*philo)->data->nbr_of_philos)
+		{
+			pthread_mutex_destroy(&(*philo)->data->forks[i]);
+			i++;
+		}
+		pthread_mutex_destroy(&(*philo)->data->print);
+		free((*philo)->data->forks);
 		free(*philo);
+		philo = NULL;
+	}
 }
 
 void	init_shared_data(char *argv[], t_data *data, int must_eats)
