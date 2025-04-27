@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 18:03:21 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/04/27 13:24:06 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/27 14:50:53 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	print_state(t_philo *philo, char *state)
 
 	time = get_current_time() - philo->data->start_time;
 	pthread_mutex_lock(&philo->data->print);
-	printf("%ld %d %s \n", time, philo->id, state);
+	printf("%-5ld %-3d %s\n", time, philo->id, state);
 	fflush(stdout);
 	pthread_mutex_unlock(&philo->data->print);
 }
@@ -42,8 +42,11 @@ void	check_death(t_philo *philo)
 	pthread_mutex_lock(&philo->data->death);
 	if (inactive_time >= philo->data->time_to_die && philo->last_meal_time != 0)
 	{
-		philo->data->death_happened = true;
-		print_state(philo, "died");
+		if (philo->data->death_happened == false)
+		{
+			philo->data->death_happened = true;
+			print_state(philo, "died");
+		}
 	}
 	pthread_mutex_unlock(&philo->data->death);
 }
