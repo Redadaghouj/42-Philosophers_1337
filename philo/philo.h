@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 09:28:34 by reda              #+#    #+#             */
-/*   Updated: 2025/04/26 16:32:23 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/27 13:18:03 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_data
 	t_timestamp		start_time;
 	pthread_mutex_t	print;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	death;
 }				t_data;
 
 typedef struct s_philo
@@ -65,6 +66,7 @@ int		parse_and_validate_args(int argc, char *argv[]);
 /* SIMULATION */
 int		start_simulation(t_philo *philo);
 void	print_state(t_philo *philo, char *state);
+void	check_death(t_philo *philo);
 
 /* LIFE_CYCLE */
 void	pick_up_forks(t_philo *philo);

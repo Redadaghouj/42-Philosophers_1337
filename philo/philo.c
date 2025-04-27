@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 09:28:08 by reda              #+#    #+#             */
-/*   Updated: 2025/04/26 16:51:48 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/27 13:51:27 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	cleanup(t_philo **philo)
 			i++;
 		}
 		pthread_mutex_destroy(&(*philo)->data->print);
+		pthread_mutex_destroy(&(*philo)->data->death);
 		free((*philo)->data->forks);
 		free(*philo);
 		philo = NULL;
@@ -40,9 +41,11 @@ void	init_shared_data(char *argv[], t_data *data, int must_eats)
 	data->forks = (pthread_mutex_t *)malloc(data->nbr_of_philos
 			* sizeof(pthread_mutex_t));
 	data->time_to_die = ft_atoi(argv[1]);
-	data->time_to_eat = ft_atoi(argv[2]);
-	data->time_to_sleep = ft_atoi(argv[3]);
+	data->time_to_eat = ft_atoi(argv[2]) * MS_TO_US;
+	data->time_to_sleep = ft_atoi(argv[3]) * MS_TO_US;
+	data->death_happened = false;
 	pthread_mutex_init(&data->print, NULL);
+	pthread_mutex_init(&data->death, NULL);
 	while (i < data->nbr_of_philos)
 	{
 		pthread_mutex_init(&data->forks[i], NULL);
@@ -62,11 +65,12 @@ int	init_philo(t_philo **philo, t_data *data)
 	*philo = (t_philo *) malloc(sizeof(t_philo) * data->nbr_of_philos);
 	if (!(*philo))
 		return (EXIT_FAILURE);
-	memset(*philo, 0, sizeof(t_philo) * data->nbr_of_philos);
 	while (i < data->nbr_of_philos)
 	{
-		(*philo)[i].data = data;
 		(*philo)[i].id = i + 1;
+		(*philo)[i].data = data;
+		(*philo)[i].meals_count = 0;
+		(*philo)[i].last_meal_time = 0;
 		(*philo)[i].left_fork = i;
 		(*philo)[i].right_fork = (i + 1) % data->nbr_of_philos;
 		i++;
