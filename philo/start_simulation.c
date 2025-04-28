@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 18:03:21 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/04/28 18:40:34 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/28 19:34:57 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,14 @@ void	print_state(t_philo *philo, char *state)
 		if (philo->meals_count < philo->data->must_eats)
 			printf("%-5ld %-3d %s\n", time, philo->id, state);
 		pthread_mutex_unlock(&philo->data->print);
-		// fflush(stdout); // -REMOVE-
 	}
 	pthread_mutex_unlock(&philo->data->layer);
+}
+
+void	one_fork_available(t_philo *philo)
+{
+	print_state(philo, "has taken a fork");
+	usleep(philo->data->time_to_die);
 }
 
 void	*routine(void *arg)
@@ -44,17 +49,22 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	if (philo->id % 2 == 0)
-		usleep(500);
-	while (1)
+	if (philo->data->nbr_of_philos == 1)
+		one_fork_available(philo);
+	else
 	{
-		if (check_death(philo) || check_must_eats(philo))
-			break ;
-		pick_up_forks(philo);
-		eat(philo);
-		put_down_forks(philo);
-		sleep_philo(philo);
-		think(philo);
+		if (philo->id % 2 == 0)
+			usleep(500);
+		while (1)
+		{
+			if (check_death(philo) || check_must_eats(philo))
+				break ;
+			pick_up_forks(philo);
+			eat(philo);
+			put_down_forks(philo);
+			sleep_philo(philo);
+			think(philo);
+		}
 	}
 	return (NULL);
 }
