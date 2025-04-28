@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   philo_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/27 09:28:08 by reda              #+#    #+#             */
-/*   Updated: 2025/04/28 19:38:16 by mdaghouj         ###   ########.fr       */
+/*   Created: 2025/04/28 19:42:46 by mdaghouj          #+#    #+#             */
+/*   Updated: 2025/04/28 20:32:02 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 void	cleanup(t_philo **philo)
 {
@@ -62,6 +62,7 @@ void	init_shared_data(char *argv[], t_data *data, int must_eats)
 int	init_philo(t_philo **philo, t_data *data)
 {
 	int	i;
+	struct timeval wd;
 
 	i = 0;
 	*philo = (t_philo *) malloc(sizeof(t_philo) * data->nbr_of_philos);
