@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 09:28:34 by reda              #+#    #+#             */
-/*   Updated: 2025/04/27 13:18:03 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/28 18:16:39 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,12 @@ typedef struct s_data
 	t_timestamp		time_to_die;
 	t_timestamp		time_to_eat;
 	t_timestamp		time_to_sleep;
-	t_timestamp		must_eats;
 	t_timestamp		start_time;
+	unsigned long	must_eats;
 	pthread_mutex_t	print;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	death;
+	pthread_mutex_t	layer;
 }				t_data;
 
 typedef struct s_philo
@@ -54,25 +55,30 @@ typedef struct s_philo
 }				t_philo;
 
 /* UTILS */
-int		ft_strlen(const char *s);
-int		ft_atoi(const char *nptr);
+int			ft_strlen(const char *s);
+int			ft_atoi(const char *nptr);
+void		ft_usleep(t_timestamp time, t_philo *philo);
 
 /* ERROR HANDLERS */
-int		print_error(char *msg);
+int			print_error(char *msg);
 
 /* PARSING */
-int		parse_and_validate_args(int argc, char *argv[]);
+int			parse_and_validate_args(int argc, char *argv[]);
 
-/* SIMULATION */
-int		start_simulation(t_philo *philo);
-void	print_state(t_philo *philo, char *state);
-void	check_death(t_philo *philo);
+/* START SIMULATION */
+int			start_simulation(t_philo *philo);
+void		print_state(t_philo *philo, char *state);
+t_timestamp	get_current_time(void);
+
+/* STOP SIMULATION */
+int			check_death(t_philo *philo);
+int			check_must_eats(t_philo *philo);
 
 /* LIFE_CYCLE */
-void	pick_up_forks(t_philo *philo);
-void	eat(t_philo *philo);
-void	put_down_forks(t_philo *philo);
-void	sleep_philo(t_philo *philo);
-void	think(t_philo *philo);
+void		pick_up_forks(t_philo *philo);
+void		eat(t_philo *philo);
+void		put_down_forks(t_philo *philo);
+void		sleep_philo(t_philo *philo);
+void		think(t_philo *philo);
 
 #endif

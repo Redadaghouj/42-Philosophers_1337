@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:44:05 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/04/27 14:52:33 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/28 18:24:07 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ void	pick_up_forks(t_philo *philo)
 void	eat(t_philo *philo)
 {
 	print_state(philo, "is eating");
-	philo->last_meal_time = get_current_time();
 	philo->meals_count++;
-	usleep(philo->data->time_to_eat);
+	philo->last_meal_time = get_current_time();
+	ft_usleep(philo->data->time_to_eat, philo);
 }
 
 void	put_down_forks(t_philo *philo)
@@ -37,7 +37,7 @@ void	put_down_forks(t_philo *philo)
 void	sleep_philo(t_philo *philo)
 {
 	print_state(philo, "is sleeping");
-	usleep(philo->data->time_to_sleep);
+	ft_usleep(philo->data->time_to_sleep, philo);
 }
 
 void	think(t_philo *philo)

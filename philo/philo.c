@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 09:28:08 by reda              #+#    #+#             */
-/*   Updated: 2025/04/27 13:51:27 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/28 18:04:06 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	cleanup(t_philo **philo)
 		}
 		pthread_mutex_destroy(&(*philo)->data->print);
 		pthread_mutex_destroy(&(*philo)->data->death);
+		pthread_mutex_destroy(&(*philo)->data->layer);
 		free((*philo)->data->forks);
 		free(*philo);
 		philo = NULL;
@@ -46,6 +47,7 @@ void	init_shared_data(char *argv[], t_data *data, int must_eats)
 	data->death_happened = false;
 	pthread_mutex_init(&data->print, NULL);
 	pthread_mutex_init(&data->death, NULL);
+	pthread_mutex_init(&data->layer, NULL);
 	while (i < data->nbr_of_philos)
 	{
 		pthread_mutex_init(&data->forks[i], NULL);
@@ -111,17 +113,3 @@ int	main(int argc, char *argv[])
 	}
 	return (EXIT_SUCCESS);
 }
-// ./pipex 5 200 200 200
-// eating, sleeping, thinking
-// nbr_of_philos time_to_die time_to_eat time_to_sleep [nbr_of_times_each_philo_must_eat]
-//	5				200			200			200
-//	10000					10100-10300	10300-10500
-//	10500			10700
-
-/*
-	◦timestamp_in_ms X has taken a fork
-	◦timestamp_in_ms X is eating
-	◦timestamp_in_ms X is sleeping
-	◦timestamp_in_ms X is thinking
-	◦timestamp_in_ms X died
-*/
