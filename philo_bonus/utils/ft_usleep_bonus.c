@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:42:13 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/04/28 19:42:14 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/28 21:48:30 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	ft_usleep(t_timestamp time, t_philo *philo)
 		{
 			pthread_mutex_unlock(&philo->data->layer);
 			usleep(100);
+			check_death(philo);
 			continue ;
 		}
 		pthread_mutex_unlock(&philo->data->layer);

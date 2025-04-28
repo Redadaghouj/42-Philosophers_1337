@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:43:33 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/04/28 20:34:00 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/28 21:48:36 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	*routine(void *arg)
 			usleep(500);
 		while (1)
 		{
-			if (check_death(philo) || check_must_eats(philo))
+			if (check_must_eats(philo))
 				break ;
 			pick_up_forks(philo);
 			eat(philo);
