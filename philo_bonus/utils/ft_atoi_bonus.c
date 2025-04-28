@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:42:01 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/04/28 19:42:02 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/28 20:59:37 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	ft_atoi(const char *nptr)
 	int		prev_res;	
 
 	res = 0;
+	i = 0;
 	while (nptr[i] >= 48 && nptr[i] <= 57)
 	{
 		prev_res = res;

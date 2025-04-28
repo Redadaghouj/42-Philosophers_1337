@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:42:46 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/04/28 20:32:02 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/28 21:04:35 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void	init_shared_data(char *argv[], t_data *data, int must_eats)
 int	init_philo(t_philo **philo, t_data *data)
 {
 	int	i;
-	struct timeval wd;
 
 	i = 0;
 	*philo = (t_philo *) malloc(sizeof(t_philo) * data->nbr_of_philos);
@@ -113,5 +112,6 @@ int	main(int argc, char *argv[])
 		cleanup(&philo);
 		return (EXIT_FAILURE);
 	}
+	cleanup(&philo);
 	return (EXIT_SUCCESS);
 }

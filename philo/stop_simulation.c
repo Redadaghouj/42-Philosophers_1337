@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 17:46:43 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/04/28 18:34:21 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/28 21:00:03 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ int	check_death(t_philo *philo)
 
 int	check_must_eats(t_philo *philo)
 {
-	int		must_eats;
-	bool	is_dead;
+	unsigned long	must_eats;
+	bool			is_dead;
 
 	must_eats = philo->data->must_eats;
 	if (philo->meals_count == must_eats)

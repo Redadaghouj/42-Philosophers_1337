@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 09:28:08 by reda              #+#    #+#             */
-/*   Updated: 2025/04/28 19:38:16 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/28 21:04:15 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,6 @@ int	main(int argc, char *argv[])
 		cleanup(&philo);
 		return (EXIT_FAILURE);
 	}
+	cleanup(&philo);
 	return (EXIT_SUCCESS);
 }
