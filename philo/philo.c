@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 09:28:08 by reda              #+#    #+#             */
-/*   Updated: 2025/04/28 21:04:15 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/29 20:28:49 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ void	cleanup(t_philo **philo)
 		}
 		pthread_mutex_destroy(&(*philo)->data->print);
 		pthread_mutex_destroy(&(*philo)->data->death);
-		pthread_mutex_destroy(&(*philo)->data->layer);
+		pthread_mutex_destroy(&(*philo)->data->extra_layer);
+		pthread_mutex_destroy(&(*philo)->data->meal_mutex);
 		free((*philo)->data->forks);
 		free(*philo);
 		philo = NULL;
@@ -42,12 +43,14 @@ void	init_shared_data(char *argv[], t_data *data, int must_eats)
 	data->forks = (pthread_mutex_t *)malloc(data->nbr_of_philos
 			* sizeof(pthread_mutex_t));
 	data->time_to_die = ft_atoi(argv[1]);
-	data->time_to_eat = ft_atoi(argv[2]) * MS_TO_US;
-	data->time_to_sleep = ft_atoi(argv[3]) * MS_TO_US;
+	data->time_to_eat = ft_atoi(argv[2]);
+	data->time_to_sleep = ft_atoi(argv[3]);
 	data->death_happened = false;
+	data->all_eats = 0;
 	pthread_mutex_init(&data->print, NULL);
 	pthread_mutex_init(&data->death, NULL);
-	pthread_mutex_init(&data->layer, NULL);
+	pthread_mutex_init(&data->meal_mutex, NULL);
+	pthread_mutex_init(&data->extra_layer, NULL);
 	while (i < data->nbr_of_philos)
 	{
 		pthread_mutex_init(&data->forks[i], NULL);
@@ -72,6 +75,7 @@ int	init_philo(t_philo **philo, t_data *data)
 		(*philo)[i].id = i + 1;
 		(*philo)[i].data = data;
 		(*philo)[i].meals_count = 0;
+		(*philo)[i].finished = false;
 		(*philo)[i].last_meal_time = 0;
 		(*philo)[i].left_fork = i;
 		(*philo)[i].right_fork = (i + 1) % data->nbr_of_philos;

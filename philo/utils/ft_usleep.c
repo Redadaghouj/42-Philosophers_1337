@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 12:03:09 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/04/28 21:49:43 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/29 17:44:04 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,17 @@ void	ft_usleep(t_timestamp time, t_philo *philo)
 	unsigned int	must_eats;
 
 	must_eats = philo->data->must_eats;
-	wake_up = (get_current_time() * MS_TO_US) + time;
-	while ((get_current_time() * MS_TO_US) < wake_up)
+	wake_up = get_current_time() + time;
+	while (get_current_time() < wake_up)
 	{
-		pthread_mutex_lock(&philo->data->layer);
-		if (!philo->data->death_happened || philo->meals_count <= must_eats)
+		pthread_mutex_lock(&philo->data->extra_layer);
+		if (philo->data->death_happened || philo->meals_count >= must_eats)
 		{
-			pthread_mutex_unlock(&philo->data->layer);
-			usleep(100);
-			check_death(philo);
-			continue ;
+			pthread_mutex_unlock(&philo->data->extra_layer);
+			break ;
 		}
-		pthread_mutex_unlock(&philo->data->layer);
-		break ;
+		pthread_mutex_unlock(&philo->data->extra_layer);
+		check_death(philo);
+		usleep(100);
 	}
 }

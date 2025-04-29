@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 09:28:34 by reda              #+#    #+#             */
-/*   Updated: 2025/04/28 20:58:26 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/29 20:28:27 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,12 @@ typedef struct s_data
 	t_timestamp		time_to_sleep;
 	t_timestamp		start_time;
 	unsigned long	must_eats;
+	unsigned long	all_eats;
 	pthread_mutex_t	print;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	death;
-	pthread_mutex_t	layer;
+	pthread_mutex_t	meal_mutex;
+	pthread_mutex_t	extra_layer;
 }				t_data;
 
 typedef struct s_philo
@@ -53,6 +55,7 @@ typedef struct s_philo
 	pthread_t		thread;
 	t_timestamp		last_meal_time;
 	unsigned long	meals_count;
+	bool			finished;
 }				t_philo;
 
 /* UTILS */
@@ -73,7 +76,7 @@ t_timestamp	get_current_time(void);
 
 /* STOP SIMULATION */
 int			check_death(t_philo *philo);
-int			check_must_eats(t_philo *philo);
+void		check_must_eats(t_philo *philo);
 
 /* LIFE_CYCLE */
 void		pick_up_forks(t_philo *philo);

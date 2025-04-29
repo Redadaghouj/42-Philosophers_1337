@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:44:05 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/04/28 18:24:07 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/29 21:18:49 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,11 @@ void	pick_up_forks(t_philo *philo)
 void	eat(t_philo *philo)
 {
 	print_state(philo, "is eating");
-	philo->meals_count++;
+	pthread_mutex_lock(&philo->data->meal_mutex);
 	philo->last_meal_time = get_current_time();
+	pthread_mutex_unlock(&philo->data->meal_mutex);
 	ft_usleep(philo->data->time_to_eat, philo);
+	// check_must_eats(philo);
 }
 
 void	put_down_forks(t_philo *philo)

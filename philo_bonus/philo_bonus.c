@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:42:46 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/04/28 21:04:35 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/29 10:38:38 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	init_shared_data(char *argv[], t_data *data, int must_eats)
 	data->nbr_of_philos = ft_atoi(argv[0]);
 	data->forks = (pthread_mutex_t *)malloc(data->nbr_of_philos
 			* sizeof(pthread_mutex_t));
-	data->time_to_die = ft_atoi(argv[1]);
+	data->time_to_die = ft_atoi(argv[1]) * MS_TO_US;
 	data->time_to_eat = ft_atoi(argv[2]) * MS_TO_US;
 	data->time_to_sleep = ft_atoi(argv[3]) * MS_TO_US;
 	data->death_happened = false;

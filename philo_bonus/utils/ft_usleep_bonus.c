@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:42:13 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/04/28 21:48:30 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/29 10:25:25 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	ft_usleep(t_timestamp time, t_philo *philo)
 		if (!philo->data->death_happened || philo->meals_count <= must_eats)
 		{
 			pthread_mutex_unlock(&philo->data->layer);
-			usleep(100);
 			check_death(philo);
+			usleep(100);
 			continue ;
 		}
 		pthread_mutex_unlock(&philo->data->layer);
