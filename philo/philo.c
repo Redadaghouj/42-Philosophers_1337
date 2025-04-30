@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 09:28:08 by reda              #+#    #+#             */
-/*   Updated: 2025/04/30 16:05:18 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/30 17:53:04 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	init_philo(t_philo **philo, t_data *data)
 
 int	setup_philos(t_data *data, t_philo **philo, int argc, char *argv[])
 {
-	if (parse_and_validate_args(argc - 1, argv + 1))
+	if (parse_and_validate_args(argc - 1, argv + 1) || argv[argc - 1][0] == '0')
 	{
 		print_error("Error: At least one argument is not valid.\n");
 		return (EXIT_FAILURE);
