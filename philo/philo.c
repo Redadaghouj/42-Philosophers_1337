@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 09:28:08 by reda              #+#    #+#             */
-/*   Updated: 2025/04/29 20:28:49 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/30 16:05:18 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,8 @@ void	cleanup(t_philo **philo)
 			pthread_mutex_destroy(&(*philo)->data->forks[i]);
 			i++;
 		}
-		pthread_mutex_destroy(&(*philo)->data->print);
-		pthread_mutex_destroy(&(*philo)->data->death);
-		pthread_mutex_destroy(&(*philo)->data->extra_layer);
+		pthread_mutex_destroy(&(*philo)->data->print_mutex);
+		pthread_mutex_destroy(&(*philo)->data->death_mutex);
 		pthread_mutex_destroy(&(*philo)->data->meal_mutex);
 		free((*philo)->data->forks);
 		free(*philo);
@@ -38,7 +37,7 @@ void	init_shared_data(char *argv[], t_data *data, int must_eats)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
 	data->nbr_of_philos = ft_atoi(argv[0]);
 	data->forks = (pthread_mutex_t *)malloc(data->nbr_of_philos
 			* sizeof(pthread_mutex_t));
@@ -47,15 +46,11 @@ void	init_shared_data(char *argv[], t_data *data, int must_eats)
 	data->time_to_sleep = ft_atoi(argv[3]);
 	data->death_happened = false;
 	data->all_eats = 0;
-	pthread_mutex_init(&data->print, NULL);
-	pthread_mutex_init(&data->death, NULL);
+	pthread_mutex_init(&data->print_mutex, NULL);
+	pthread_mutex_init(&data->death_mutex, NULL);
 	pthread_mutex_init(&data->meal_mutex, NULL);
-	pthread_mutex_init(&data->extra_layer, NULL);
-	while (i < data->nbr_of_philos)
-	{
+	while (++i < data->nbr_of_philos)
 		pthread_mutex_init(&data->forks[i], NULL);
-		i++;
-	}
 	if (must_eats)
 		data->must_eats = ft_atoi(argv[4]);
 	else
@@ -102,7 +97,6 @@ int	setup_philos(t_data *data, t_philo **philo, int argc, char *argv[])
 
 int	main(int argc, char *argv[])
 {
-	// TODO: fix CFLAGS in Makefile
 	t_data	data;
 	t_philo	*philo;
 

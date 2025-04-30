@@ -1,8 +1,6 @@
 CC := cc
 
-# CFLAGS := -Werror -Wextra -Wall
-# CFLAGS := -Werror -Wextra -Wall -w -fsanitize=address -g
-CFLAGS := -Werror -Wextra -Wall -fsanitize=thread -g
+CFLAGS := -Werror -Wextra -Wall #-fsanitize=thread -g
 
 RM := rm -f
 
@@ -10,8 +8,8 @@ NAME := philo
 
 UTILS := utils
 
-SRCS := philo.c parsing.c start_simulation.c stop_simulation.c life_cycle.c error_handlers.c \
-		${UTILS}/ft_strlen.c ${UTILS}/ft_atoi.c ${UTILS}/ft_usleep.c\
+SRCS := philo.c philo_utils.c parser.c start_simulation.c stop_simulation.c life_cycle.c \
+		${UTILS}/ft_strlen.c ${UTILS}/ft_atoi.c \
 
 
 OBJS := ${SRCS:.c=.o}
