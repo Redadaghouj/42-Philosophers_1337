@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 18:03:21 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/04/30 13:42:49 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/30 20:58:31 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	*routine(void *arg)
 int	create_threads(t_philo *philo, int philos_nbr)
 {
 	int			i;
-	pthread_t	thread;
 
 	i = -1;
 	while (++i < philos_nbr)
@@ -59,14 +58,7 @@ int	create_threads(t_philo *philo, int philos_nbr)
 		}
 	}
 	if (philos_nbr > 1)
-	{
-		if (pthread_create(&thread, NULL, monitor_death, philo) != 0)
-		{
-			print_error("Error: Failed to create thread.\n");
-			return (EXIT_FAILURE);
-		}
-		pthread_join(thread, NULL);
-	}
+		monitor_death(philo);
 	i = -1;
 	while (++i < philos_nbr)
 		pthread_join(philo[i].thread, NULL);

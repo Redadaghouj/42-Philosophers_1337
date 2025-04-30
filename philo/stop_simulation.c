@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 17:46:43 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/04/30 16:12:24 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/30 20:56:03 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,11 @@ int	check_death(t_philo *philo)
 	return (is_dead);
 }
 
-void	*monitor_death(void *arg)
+void	monitor_death(t_philo	*philo)
 {
-	t_philo	*philo;
 	int		i;
 	int		nbr;
 
-	philo = (t_philo *)arg;
 	nbr = philo->data->nbr_of_philos;
 	while (true)
 	{
@@ -63,12 +61,11 @@ void	*monitor_death(void *arg)
 		while (i < nbr)
 		{
 			if (check_death(&philo[i]))
-				return (NULL);
+				return ;
 			i++;
 		}
 		usleep(1000);
 	}
-	return (NULL);
 }
 
 int	has_died(t_philo *philo)

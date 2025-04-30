@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 09:28:34 by reda              #+#    #+#             */
-/*   Updated: 2025/04/30 16:09:55 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/04/30 20:56:10 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int			start_simulation(t_philo *philo);
 
 /* STOP SIMULATION */
 int			check_death(t_philo *philo);
-void		*monitor_death(void *arg);
+void		monitor_death(t_philo	*philo);
 int			has_died(t_philo *philo);
 bool		get_is_dead(t_philo *philo);
 
