@@ -6,17 +6,20 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 18:03:21 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/04/30 20:58:31 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/01 10:33:58 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	one_fork_available(t_philo *philo)
+void	*one_fork_available(t_philo *philo)
 {
+	pthread_mutex_lock(&philo->data->forks[philo->right_fork]);
 	print_state(philo, "has taken a fork");
-	usleep(philo->data->time_to_die * MS_TO_US);
+	ft_usleep(philo->data->time_to_die, philo);
 	print_state(philo, "died");
+	pthread_mutex_unlock(&philo->data->forks[philo->right_fork]);
+	return (NULL);
 }
 
 void	*routine(void *arg)
@@ -25,10 +28,7 @@ void	*routine(void *arg)
 
 	philo = (t_philo *)arg;
 	if (philo->data->nbr_of_philos == 1)
-	{
-		one_fork_available(philo);
-		return (NULL);
-	}
+		return (one_fork_available(philo));
 	if (philo->id % 2 == 0)
 		usleep(500);
 	while (true)

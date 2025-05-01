@@ -6,32 +6,11 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:59:42 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/04/30 17:59:44 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/01 13:21:57 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-
-void	cleanup(t_philo **philo)
-{
-	int	i;
-
-	i = 0;
-	if (*philo)
-	{
-		while (i < (*philo)->data->nbr_of_philos)
-		{
-			pthread_mutex_destroy(&(*philo)->data->forks[i]);
-			i++;
-		}
-		pthread_mutex_destroy(&(*philo)->data->print_mutex);
-		pthread_mutex_destroy(&(*philo)->data->death_mutex);
-		pthread_mutex_destroy(&(*philo)->data->meal_mutex);
-		free((*philo)->data->forks);
-		free(*philo);
-		philo = NULL;
-	}
-}
 
 void	init_shared_data(char *argv[], t_data *data, int must_eats)
 {
@@ -39,18 +18,15 @@ void	init_shared_data(char *argv[], t_data *data, int must_eats)
 
 	i = -1;
 	data->nbr_of_philos = ft_atoi(argv[0]);
-	data->forks = (pthread_mutex_t *)malloc(data->nbr_of_philos
-			* sizeof(pthread_mutex_t));
 	data->time_to_die = ft_atoi(argv[1]);
 	data->time_to_eat = ft_atoi(argv[2]);
 	data->time_to_sleep = ft_atoi(argv[3]);
 	data->death_happened = false;
 	data->all_eats = 0;
-	pthread_mutex_init(&data->print_mutex, NULL);
-	pthread_mutex_init(&data->death_mutex, NULL);
-	pthread_mutex_init(&data->meal_mutex, NULL);
-	while (++i < data->nbr_of_philos)
-		pthread_mutex_init(&data->forks[i], NULL);
+	data->forks_sem = sem_open(FORKS_SEM, O_CREAT, 0644, data->nbr_of_philos);
+	data->print_sem = sem_open(PRINT_SEM, O_CREAT, 0644, 1);
+	data->death_sem = sem_open(DEATH_SEM, O_CREAT, 0644, 1);
+	data->meal_sem = sem_open(MEAL_SEM, O_CREAT, 0644, 1);
 	if (must_eats)
 		data->must_eats = ft_atoi(argv[4]);
 	else
@@ -72,8 +48,6 @@ int	init_philo(t_philo **philo, t_data *data)
 		(*philo)[i].meals_count = 0;
 		(*philo)[i].finished = false;
 		(*philo)[i].last_meal_time = 0;
-		(*philo)[i].left_fork = i;
-		(*philo)[i].right_fork = (i + 1) % data->nbr_of_philos;
 		i++;
 	}
 	return (EXIT_SUCCESS);
@@ -81,7 +55,7 @@ int	init_philo(t_philo **philo, t_data *data)
 
 int	setup_philos(t_data *data, t_philo **philo, int argc, char *argv[])
 {
-	if (parse_and_validate_args(argc - 1, argv + 1) || argv[argc - 1][0] == '0')
+	if (parse_and_validate_args(argc - 1, argv + 1))
 	{
 		print_error("Error: At least one argument is not valid.\n");
 		return (EXIT_FAILURE);
@@ -105,6 +79,8 @@ int	main(int argc, char *argv[])
 		print_error("Error: Invalid number of arguments, Expected 5 or 6.\n");
 		return (EXIT_FAILURE);
 	}
+	if (argc == 6 && ft_atoi(argv[argc - 1]) == 0)
+		return (EXIT_SUCCESS);
 	if (setup_philos(&data, &philo, argc, argv) || start_simulation(philo))
 	{
 		cleanup(&philo);

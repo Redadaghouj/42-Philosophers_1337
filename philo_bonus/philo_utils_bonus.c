@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:29 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/04/30 18:00:30 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/01 13:28:37 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,31 +51,31 @@ void	ft_usleep(t_timestamp time, t_philo *philo)
 
 void	print_state(t_philo *philo, char *state)
 {
-	t_timestamp	time;
-	bool		is_dead;
+	// t_timestamp	time;
+	// bool		is_dead;
 
-	is_dead = get_is_dead(philo);
-	if (!is_dead)
-	{
-		time = get_current_time() - philo->data->start_time;
-		pthread_mutex_lock(&philo->data->print_mutex);
-		if (!philo->finished)
-			printf("%-5lu %-3d %s\n", time, philo->id, state);
-		pthread_mutex_unlock(&philo->data->print_mutex);
-	}
+	// is_dead = get_is_dead(philo);
+	// if (!is_dead)
+	// {
+	// 	time = get_current_time() - philo->data->start_time;
+	// 	pthread_mutex_lock(&philo->data->print_mutex);
+	// 	if (!philo->data->death_happened)
+	// 		printf("%-5lu %-3d %s\n", time, philo->id, state);
+	// 	pthread_mutex_unlock(&philo->data->print_mutex);
+	// }
 }
 
 void	must_eats(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->data->meal_mutex);
-	if (philo->data->must_eats > -1)
-	{
-		philo->meals_count++;
-		if (philo->meals_count >= philo->data->must_eats && !philo->finished)
-		{
-			philo->data->all_eats++;
-			philo->finished = true;
-		}
-	}
-	pthread_mutex_unlock(&philo->data->meal_mutex);
+	// pthread_mutex_lock(&philo->data->meal_mutex);
+	// if (philo->data->must_eats > -1)
+	// {
+	// 	philo->meals_count++;
+	// 	if (philo->meals_count >= philo->data->must_eats && !philo->finished)
+	// 	{
+	// 		philo->data->all_eats++;
+	// 		philo->finished = true;
+	// 	}
+	// }
+	// pthread_mutex_unlock(&philo->data->meal_mutex);
 }

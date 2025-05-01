@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 17:46:43 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/04/30 20:56:03 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/01 10:00:54 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	monitor_death(t_philo	*philo)
 				return ;
 			i++;
 		}
-		usleep(1000);
+		usleep(500);
 	}
 }
 

@@ -6,14 +6,14 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:21 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/04/30 18:00:22 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/01 13:22:58 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_BONUS_H
 # define PHILO_BONUS_H
 
-# include <pthread.h>
+# include <semaphore.h>
 # include <sys/time.h>
 # include <stdbool.h>
 # include <strings.h>
@@ -26,33 +26,35 @@
 # define MS_TO_US 1000
 # define MAX_PHILOS 200
 # define MIN_PHILOS 1
+# define FORKS_SEM "/forks_sem"
+# define PRINT_SEM "/print_sem"
+# define DEATH_SEM "/death_sem"
+# define MEAL_SEM "/meal_sem"
 
 typedef unsigned long	t_timestamp;
 
 typedef struct s_data
 {
-	int				nbr_of_philos;
-	int				all_eats;
-	int				must_eats;
-	bool			death_happened;
-	t_timestamp		time_to_die;
-	t_timestamp		time_to_eat;
-	t_timestamp		time_to_sleep;
-	t_timestamp		start_time;
-	pthread_mutex_t	print_mutex;
-	pthread_mutex_t	*forks;
-	pthread_mutex_t	death_mutex;
-	pthread_mutex_t	meal_mutex;
+	int			nbr_of_philos;
+	int			all_eats;
+	int			must_eats;
+	bool		death_happened;
+	t_timestamp	time_to_die;
+	t_timestamp	time_to_eat;
+	t_timestamp	time_to_sleep;
+	t_timestamp	start_time;
+	sem_t		*print_sem;
+	sem_t		*forks_sem;
+	sem_t		*death_sem;
+	sem_t		*meal_sem;
+	pid_t		*pids;
 }				t_data;
 
 typedef struct s_philo
 {
 	int				id;
-	int				right_fork;
-	int				left_fork;
 	int				meals_count;
 	t_data			*data;
-	pthread_t		thread;
 	t_timestamp		last_meal_time;
 	bool			finished;
 }				t_philo;
@@ -69,7 +71,7 @@ int			start_simulation(t_philo *philo);
 
 /* STOP SIMULATION BONUS */
 int			check_death(t_philo *philo);
-void		*monitor_death(void *arg);
+void		monitor_death(t_philo	*philo);
 int			has_died(t_philo *philo);
 bool		get_is_dead(t_philo *philo);
 
@@ -86,5 +88,8 @@ void		ft_usleep(t_timestamp time, t_philo *philo);
 void		print_state(t_philo *philo, char *state);
 int			print_error(char *msg);
 void		must_eats(t_philo *philo);
+
+/* CLEANUP */
+void	cleanup(t_philo **philo);
 
 #endif

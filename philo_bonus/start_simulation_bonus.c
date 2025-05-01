@@ -6,29 +6,29 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:40 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/04/30 18:00:42 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/01 13:27:54 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-void	one_fork_available(t_philo *philo)
-{
-	print_state(philo, "has taken a fork");
-	usleep(philo->data->time_to_die * MS_TO_US);
-	print_state(philo, "died");
-}
+// void	*one_fork_available(t_philo *philo)
+// {
+// 	pthread_mutex_lock(&philo->data->forks[philo->right_fork]);
+// 	print_state(philo, "has taken a fork");
+// 	ft_usleep(philo->data->time_to_die, philo);
+// 	print_state(philo, "died");
+// 	pthread_mutex_unlock(&philo->data->forks[philo->right_fork]);
+// 	return (NULL);
+// }
 
 void	*routine(void *arg)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	if (philo->data->nbr_of_philos == 1)
-	{
-		one_fork_available(philo);
-		return (NULL);
-	}
+	// if (philo->data->nbr_of_philos == 1)
+	// 	return (one_fork_available(philo));
 	if (philo->id % 2 == 0)
 		usleep(500);
 	while (true)
@@ -44,32 +44,18 @@ void	*routine(void *arg)
 	return (NULL);
 }
 
-int	create_threads(t_philo *philo, int philos_nbr)
+int	fork_processes(t_philo *philo, int philos_nbr)
 {
 	int			i;
-	pthread_t	thread;
 
 	i = -1;
 	while (++i < philos_nbr)
 	{
-		if (pthread_create(&philo[i].thread, NULL, routine, &philo[i]) != 0)
-		{
-			print_error("Error: Failed to create threads.\n");
-			return (EXIT_FAILURE);
-		}
+		
 	}
 	if (philos_nbr > 1)
-	{
-		if (pthread_create(&thread, NULL, monitor_death, philo) != 0)
-		{
-			print_error("Error: Failed to create thread.\n");
-			return (EXIT_FAILURE);
-		}
-		pthread_join(thread, NULL);
-	}
+		monitor_death(philo);
 	i = -1;
-	while (++i < philos_nbr)
-		pthread_join(philo[i].thread, NULL);
 	return (EXIT_SUCCESS);
 }
 
@@ -83,7 +69,7 @@ int	start_simulation(t_philo *philo)
 	philo->data->start_time = get_current_time();
 	while (++i < philos_nbr)
 		philo[i].last_meal_time = philo->data->start_time;
-	if (create_threads(philo, philos_nbr))
+	if (fork_processes(philo, philos_nbr))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 09:28:08 by reda              #+#    #+#             */
-/*   Updated: 2025/04/30 17:53:04 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/01 13:26:08 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	cleanup(t_philo **philo)
 		pthread_mutex_destroy(&(*philo)->data->meal_mutex);
 		free((*philo)->data->forks);
 		free(*philo);
-		philo = NULL;
+		*philo = NULL;
 	}
 }
 
@@ -81,7 +81,7 @@ int	init_philo(t_philo **philo, t_data *data)
 
 int	setup_philos(t_data *data, t_philo **philo, int argc, char *argv[])
 {
-	if (parse_and_validate_args(argc - 1, argv + 1) || argv[argc - 1][0] == '0')
+	if (parse_and_validate_args(argc - 1, argv + 1))
 	{
 		print_error("Error: At least one argument is not valid.\n");
 		return (EXIT_FAILURE);
@@ -105,6 +105,8 @@ int	main(int argc, char *argv[])
 		print_error("Error: Invalid number of arguments, Expected 5 or 6.\n");
 		return (EXIT_FAILURE);
 	}
+	if (argc == 6 && ft_atoi(argv[argc - 1]) == 0)
+		return (EXIT_SUCCESS);
 	if (setup_philos(&data, &philo, argc, argv) || start_simulation(philo))
 	{
 		cleanup(&philo);
