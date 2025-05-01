@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 17:46:43 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/01 10:00:54 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/01 13:48:19 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	check_death(t_philo *philo)
 	pthread_mutex_lock(&philo->data->meal_mutex);
 	eats = philo->data->all_eats;
 	nbr_of_philos = philo->data->nbr_of_philos;
-	inactive_time = get_current_time() - philo->last_meal_time;
 	pthread_mutex_unlock(&philo->data->meal_mutex);
+	inactive_time = get_current_time() - philo->last_meal_time;
 	is_dead = get_is_dead(philo);
 	if (inactive_time >= philo->data->time_to_die || eats == nbr_of_philos)
 	{
