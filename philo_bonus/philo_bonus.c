@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:59:42 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/01 13:21:57 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:50:59 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	init_shared_data(char *argv[], t_data *data, int must_eats)
 	data->time_to_sleep = ft_atoi(argv[3]);
 	data->death_happened = false;
 	data->all_eats = 0;
+	data->pids = (pid_t)malloc(sizeof(pid_t) * data->nbr_of_philos);
 	data->forks_sem = sem_open(FORKS_SEM, O_CREAT, 0644, data->nbr_of_philos);
 	data->print_sem = sem_open(PRINT_SEM, O_CREAT, 0644, 1);
 	data->death_sem = sem_open(DEATH_SEM, O_CREAT, 0644, 1);

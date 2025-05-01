@@ -6,31 +6,30 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:40 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/01 13:27:54 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/01 20:15:19 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-// void	*one_fork_available(t_philo *philo)
-// {
-// 	pthread_mutex_lock(&philo->data->forks[philo->right_fork]);
-// 	print_state(philo, "has taken a fork");
-// 	ft_usleep(philo->data->time_to_die, philo);
-// 	print_state(philo, "died");
-// 	pthread_mutex_unlock(&philo->data->forks[philo->right_fork]);
-// 	return (NULL);
-// }
-
-void	*routine(void *arg)
+void	*one_fork_available(t_philo *philo)
 {
-	t_philo	*philo;
+	sem_wait(philo->data->forks_sem);
+	print_state(philo, "has taken a fork");
+	ft_usleep(philo->data->time_to_die, philo);
+	print_state(philo, "died");
+	sem_post(philo->data->forks_sem);
+	return (NULL);
+}
 
-	philo = (t_philo *)arg;
-	// if (philo->data->nbr_of_philos == 1)
-	// 	return (one_fork_available(philo));
+void	routine(t_philo	*philo)
+{
+	if (philo->data->nbr_of_philos == 1)
+		return (one_fork_available(philo));
 	if (philo->id % 2 == 0)
 		usleep(500);
+	if (philo->data->nbr_of_philos > 1)
+		create_monitor_thread(philo);
 	while (true)
 	{
 		pick_up_forks(philo);
@@ -41,21 +40,21 @@ void	*routine(void *arg)
 		if (has_died(philo))
 			break ;
 	}
-	return (NULL);
 }
 
 int	fork_processes(t_philo *philo, int philos_nbr)
 {
-	int			i;
+	t_data	*data;
+	int		i;
 
+	data = philo->data;
 	i = -1;
 	while (++i < philos_nbr)
 	{
-		
+		data->pids[i] = ft_fork();
+		if (data->pids[i] == 0)
+			routine(philo);
 	}
-	if (philos_nbr > 1)
-		monitor_death(philo);
-	i = -1;
 	return (EXIT_SUCCESS);
 }
 

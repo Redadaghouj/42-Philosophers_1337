@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:21 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/01 13:22:58 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:42:40 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_philo
 /* UTILS BONUS */
 int			ft_strlen(const char *s);
 int			ft_atoi(const char *nptr);
+pid_t		ft_fork(void);
 
 /* PARSING BONUS */
 int			parse_and_validate_args(int argc, char *argv[]);

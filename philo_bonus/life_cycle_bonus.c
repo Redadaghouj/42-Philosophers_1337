@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:59:17 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/01 13:29:37 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/01 18:32:07 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,26 @@
 
 void	pick_up_forks(t_philo *philo)
 {
-	// pthread_mutex_lock(&philo->data->forks[philo->right_fork]);
+	sem_wait(philo->data->forks_sem);
 	print_state(philo, "has taken a fork");
-	// pthread_mutex_lock(&philo->data->forks[philo->left_fork]);
+	sem_wait(philo->data->forks_sem);
 	print_state(philo, "has taken a fork");
 }
 
 void	eat(t_philo *philo)
 {
 	print_state(philo, "is eating");
-	// pthread_mutex_lock(&philo->data->meal_mutex);
-	// philo->last_meal_time = get_current_time();
-	// pthread_mutex_unlock(&philo->data->meal_mutex);
-	// ft_usleep(philo->data->time_to_eat, philo);
+	sem_wait(philo->data->meal_sem);
+	philo->last_meal_time = get_current_time();
+	sem_post(philo->data->meal_sem);
+	ft_usleep(philo->data->time_to_eat, philo);
 	// must_eats(philo);
 }
 
 void	put_down_forks(t_philo *philo)
 {
-	// pthread_mutex_unlock(&philo->data->forks[philo->right_fork]);
-	// pthread_mutex_unlock(&philo->data->forks[philo->left_fork]);
+	sem_post(philo->data->forks_sem);
+	sem_post(philo->data->forks_sem);
 }
 
 void	sleep_philo(t_philo *philo)

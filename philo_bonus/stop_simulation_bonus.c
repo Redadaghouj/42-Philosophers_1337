@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:51 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/01 13:29:06 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/01 20:17:45 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,46 +14,48 @@
 
 bool	get_is_dead(t_philo *philo)
 {
-	// bool	is_dead;
+	bool	is_dead;
 
-	// pthread_mutex_lock(&philo->data->death_mutex);
-	// is_dead = philo->data->death_happened;
-	// pthread_mutex_unlock(&philo->data->death_mutex);
-	// return (is_dead);
+	sem_wait(philo->data->death_sem);
+	is_dead = philo->data->death_happened;
+	sem_post(philo->data->death_sem);
+	return (is_dead);
 }
 
 int	check_death(t_philo *philo)
 {
-	// t_timestamp		inactive_time;
-	// bool			is_dead;
-	// int				eats;
-	// int				nbr_of_philos;
+	t_timestamp		inactive_time;
+	bool			is_dead;
+	int				eats;
+	int				nbr_of_philos;
 
-	// pthread_mutex_lock(&philo->data->meal_mutex);
-	// eats = philo->data->all_eats;
-	// nbr_of_philos = philo->data->nbr_of_philos;
-	// inactive_time = get_current_time() - philo->last_meal_time;
-	// pthread_mutex_unlock(&philo->data->meal_mutex);
-	// is_dead = get_is_dead(philo);
-	// if (inactive_time >= philo->data->time_to_die || eats == nbr_of_philos)
-	// {
-	// 	if (!is_dead)
-	// 	{
-	// 		print_state(philo, "died");
-	// 		pthread_mutex_lock(&philo->data->death_mutex);
-	// 		philo->data->death_happened = true;
-	// 		pthread_mutex_unlock(&philo->data->death_mutex);
-	// 	}
-	// }
-	// is_dead = get_is_dead(philo);
-	// return (is_dead);
+	sem_wait(philo->data->meal_sem);
+	eats = philo->data->all_eats;
+	nbr_of_philos = philo->data->nbr_of_philos;
+	sem_post(philo->data->meal_sem);
+	inactive_time = get_current_time() - philo->last_meal_time;
+	is_dead = get_is_dead(philo);
+	if (inactive_time >= philo->data->time_to_die || eats == nbr_of_philos)
+	{
+		if (!is_dead)
+		{
+			print_state(philo, "died");
+			sem_wait(philo->data->death_sem);
+			philo->data->death_happened = true;
+			sem_post(philo->data->death_sem);
+		}
+	}
+	is_dead = get_is_dead(philo);
+	return (is_dead);
 }
 
-void	monitor_death(t_philo	*philo)
+void	*monitor_death(void	*arg)
 {
+	t_philo	*philo;
 	int		i;
 	int		nbr;
 
+	philo = (t_philo *) arg;
 	nbr = philo->data->nbr_of_philos;
 	while (true)
 	{
@@ -66,6 +68,7 @@ void	monitor_death(t_philo	*philo)
 		}
 		usleep(500);
 	}
+	return (NULL);
 }
 
 int	has_died(t_philo *philo)
@@ -75,5 +78,18 @@ int	has_died(t_philo *philo)
 	is_dead = get_is_dead(philo);
 	if (is_dead)
 		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+}
+
+int	create_monitor_thread(t_philo *philo)
+{
+	pthread_t	thread;
+
+	if (pthread_create(&thread, NULL, monitor_death, philo) != 0)
+	{
+		print_error("Error: Failed to create thread.\n");
+		return (EXIT_FAILURE);
+	}
+	pthread_join(thread, NULL);
 	return (EXIT_SUCCESS);
 }
