@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 10:32:20 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/01 10:17:21 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/03 11:08:16 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	ft_usleep(t_timestamp time, t_philo *philo)
 		if (is_dead)
 			break ;
 		check_death(philo);
-		usleep(100);
+		usleep(500);
 	}
 }
 
@@ -59,8 +59,9 @@ void	print_state(t_philo *philo, char *state)
 	{
 		time = get_current_time() - philo->data->start_time;
 		pthread_mutex_lock(&philo->data->print_mutex);
-		if (!philo->data->death_happened)
-			printf("%-5lu %-3d %s\n", time, philo->id, state);
+		is_dead = get_is_dead(philo);
+		if (!is_dead)
+			printf("%-4lu %-3d %s\n", time, philo->id, state);
 		pthread_mutex_unlock(&philo->data->print_mutex);
 	}
 }

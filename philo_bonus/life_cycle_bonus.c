@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:59:17 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/01 18:32:07 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/02 11:50:29 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	eat(t_philo *philo)
 	philo->last_meal_time = get_current_time();
 	sem_post(philo->data->meal_sem);
 	ft_usleep(philo->data->time_to_eat, philo);
-	// must_eats(philo);
+	must_eats(philo);
 }
 
 void	put_down_forks(t_philo *philo)

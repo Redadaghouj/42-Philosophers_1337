@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 12:03:09 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/04/28 20:59:49 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/03 10:40:40 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	ft_atoi(const char *nptr)
 {
-	int		i;
-	int		res;
-	int		prev_res;	
+	int	i;
+	int	res;
+	int	prev_res;	
 
 	res = 0;
 	i = 0;

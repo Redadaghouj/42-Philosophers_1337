@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:51 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/01 20:17:45 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/02 12:12:55 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	*monitor_death(void	*arg)
 		while (i < nbr)
 		{
 			if (check_death(&philo[i]))
-				return ;
+				return (NULL);
 			i++;
 		}
 		usleep(500);

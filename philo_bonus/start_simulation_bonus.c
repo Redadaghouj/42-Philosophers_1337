@@ -6,26 +6,26 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:40 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/01 20:15:19 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/02 12:27:06 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-void	*one_fork_available(t_philo *philo)
+void	one_fork_available(t_philo *philo)
 {
 	sem_wait(philo->data->forks_sem);
 	print_state(philo, "has taken a fork");
 	ft_usleep(philo->data->time_to_die, philo);
 	print_state(philo, "died");
 	sem_post(philo->data->forks_sem);
-	return (NULL);
+	exit(EXIT_SUCCESS);
 }
 
 void	routine(t_philo	*philo)
 {
 	if (philo->data->nbr_of_philos == 1)
-		return (one_fork_available(philo));
+		one_fork_available(philo);
 	if (philo->id % 2 == 0)
 		usleep(500);
 	if (philo->data->nbr_of_philos > 1)
@@ -55,13 +55,21 @@ int	fork_processes(t_philo *philo, int philos_nbr)
 		if (data->pids[i] == 0)
 			routine(philo);
 	}
+	while (wait(NULL) != -1)
+	{
+		i = -1;
+		while (++i < data->nbr_of_philos)
+			kill(data->pids[i], SIGKILL);
+		puts("DONE!");
+		return (EXIT_SUCCESS);
+	}
 	return (EXIT_SUCCESS);
 }
 
 int	start_simulation(t_philo *philo)
 {
-	int			i;
-	int			philos_nbr;
+	int		i;
+	int		philos_nbr;
 
 	i = -1;
 	philos_nbr = philo->data->nbr_of_philos;

@@ -1,13 +1,13 @@
 CC := cc
 
-CFLAGS := -Werror -Wextra -Wall #-fsanitize=thread -g
+CFLAGS := -Werror -Wextra -Wall -fsanitize=thread -g
 
 RM := rm -f
 
 NAME := philo_bonus
 
-SRCS := philo_bonus.c philo_utils_bonus.c parser_bonus.c start_simulation_bonus.c stop_simulation_bonus.c life_cycle_bonus.c \
-		utils/ft_strlen_bonus.c utils/ft_atoi_bonus.c \
+SRCS := philo_bonus.c cleanup_bonus.c philo_utils_bonus.c parser_bonus.c start_simulation_bonus.c stop_simulation_bonus.c life_cycle_bonus.c \
+		utils/ft_strlen_bonus.c utils/ft_atoi_bonus.c utils/ft_fork_bonus.c \
 
 
 OBJS := ${SRCS:.c=.o}

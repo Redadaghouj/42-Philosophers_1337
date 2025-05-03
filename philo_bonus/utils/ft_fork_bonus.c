@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 17:42:23 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/01 17:42:24 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/02 11:12:49 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ pid_t	ft_fork(void)
 
 	pid = fork();
 	if (pid == -1)
-		safe_exit(NULL, 1);
+		puts("Error\n");
+		// safe_exit(NULL, 1);
 	return (pid);
 }

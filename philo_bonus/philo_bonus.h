@@ -6,13 +6,14 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:21 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/01 17:42:40 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/02 12:29:57 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_BONUS_H
 # define PHILO_BONUS_H
 
+# include <pthread.h>
 # include <semaphore.h>
 # include <sys/time.h>
 # include <stdbool.h>
@@ -20,6 +21,7 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <signal.h>
 
 # define EXIT_FAILURE 1
 # define EXIT_SUCCESS 0
@@ -72,9 +74,10 @@ int			start_simulation(t_philo *philo);
 
 /* STOP SIMULATION BONUS */
 int			check_death(t_philo *philo);
-void		monitor_death(t_philo	*philo);
+void		*monitor_death(void	*arg);
 int			has_died(t_philo *philo);
 bool		get_is_dead(t_philo *philo);
+int			create_monitor_thread(t_philo *philo);
 
 /* LIFE_CYCLE BONUS */
 void		pick_up_forks(t_philo *philo);
@@ -91,6 +94,7 @@ int			print_error(char *msg);
 void		must_eats(t_philo *philo);
 
 /* CLEANUP */
-void	cleanup(t_philo **philo);
+void		cleanup(t_philo **philo);
+void		ft_unlink_sem(void);
 
 #endif

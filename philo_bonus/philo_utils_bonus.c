@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:29 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/01 18:29:10 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/02 12:30:13 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	print_state(t_philo *philo, char *state)
 	{
 		time = get_current_time() - philo->data->start_time;
 		sem_wait(philo->data->print_sem);
-		if (!philo->data->death_happened)
+		if (!is_dead)
 			printf("%-5lu %-3d %s\n", time, philo->id, state);
 		sem_post(philo->data->print_sem);
 	}
@@ -67,15 +67,15 @@ void	print_state(t_philo *philo, char *state)
 
 void	must_eats(t_philo *philo)
 {
-	// pthread_mutex_lock(&philo->data->meal_mutex);
-	// if (philo->data->must_eats > -1)
-	// {
-	// 	philo->meals_count++;
-	// 	if (philo->meals_count >= philo->data->must_eats && !philo->finished)
-	// 	{
-	// 		philo->data->all_eats++;
-	// 		philo->finished = true;
-	// 	}
-	// }
-	// pthread_mutex_unlock(&philo->data->meal_mutex);
+	sem_wait(philo->data->meal_sem);
+	if (philo->data->must_eats > -1)
+	{
+		philo->meals_count++;
+		if (philo->meals_count >= philo->data->must_eats && !philo->finished)
+		{
+			philo->data->all_eats++;
+			philo->finished = true;
+		}
+	}
+	sem_post(philo->data->meal_sem);
 }
