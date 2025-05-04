@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:51 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/02 12:12:55 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/05 00:21:32 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ int	check_death(t_philo *philo)
 	{
 		if (!is_dead)
 		{
-			print_state(philo, "died");
+			if (philo->data->must_eats == -1)
+				print_state(philo, "died");
 			sem_wait(philo->data->death_sem);
 			philo->data->death_happened = true;
 			sem_post(philo->data->death_sem);
@@ -53,14 +54,12 @@ void	*monitor_death(void	*arg)
 {
 	t_philo	*philo;
 	int		i;
-	int		nbr;
 
 	philo = (t_philo *) arg;
-	nbr = philo->data->nbr_of_philos;
 	while (true)
 	{
 		i = 0;
-		while (i < nbr)
+		while (i < philo->data->nbr_of_philos)
 		{
 			if (check_death(&philo[i]))
 				return (NULL);
@@ -69,16 +68,6 @@ void	*monitor_death(void	*arg)
 		usleep(500);
 	}
 	return (NULL);
-}
-
-int	has_died(t_philo *philo)
-{
-	bool	is_dead;
-
-	is_dead = get_is_dead(philo);
-	if (is_dead)
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
 }
 
 int	create_monitor_thread(t_philo *philo)

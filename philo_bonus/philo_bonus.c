@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:59:42 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/02 12:29:32 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/05 00:20:46 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	init_shared_data(char *argv[], t_data *data, int must_eats)
 	data->death_sem = sem_open(DEATH_SEM, O_CREAT, 0644, 1);
 	data->meal_sem = sem_open(MEAL_SEM, O_CREAT, 0644, 1);
 	if (data->forks_sem == SEM_FAILED || data->print_sem == SEM_FAILED
-			|| data->death_sem == SEM_FAILED || data->meal_sem == SEM_FAILED)
+		|| data->death_sem == SEM_FAILED || data->meal_sem == SEM_FAILED)
 		return (EXIT_FAILURE);
 	if (must_eats)
 		data->must_eats = ft_atoi(argv[4]);
@@ -52,7 +52,6 @@ int	init_philo(t_philo **philo, t_data *data)
 		(*philo)[i].data = data;
 		(*philo)[i].meals_count = 0;
 		(*philo)[i].finished = false;
-		(*philo)[i].last_meal_time = 0;
 		i++;
 	}
 	return (EXIT_SUCCESS);

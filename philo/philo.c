@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 09:28:08 by reda              #+#    #+#             */
-/*   Updated: 2025/05/02 22:49:20 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/04 18:36:58 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ int	init_philo(t_philo **philo, t_data *data)
 		(*philo)[i].data = data;
 		(*philo)[i].meals_count = 0;
 		(*philo)[i].finished = false;
-		(*philo)[i].last_meal_time = 0;
 		(*philo)[i].left_fork = i;
 		(*philo)[i].right_fork = (i + 1) % data->nbr_of_philos;
 		i++;
@@ -115,3 +114,5 @@ int	main(int argc, char *argv[])
 	cleanup(&philo);
 	return (EXIT_SUCCESS);
 }
+
+// 4 100 30 30 -> 

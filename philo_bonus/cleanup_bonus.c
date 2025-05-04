@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 13:05:37 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/02 12:29:43 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/05 00:20:32 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,35 +28,18 @@ void	ft_unlink_sem(void)
 	sem_unlink(MEAL_SEM);
 }
 
-// void	cleanup(t_philo **philo)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	if (*philo)
-// 	{
-// 		ft_close_sem(*philo);
-// 		ft_unlink_sem();
-// 		free((*philo)->data->pids);
-// 		(*philo)->data->pids = NULL;
-// 		free(*philo);
-// 		*philo = NULL;
-// 	}
-// }
-
-void cleanup(t_philo **philo)
+void	cleanup(t_philo **philo)
 {
-    if (*philo)
-    {
-        if ((*philo)->data)
-        {
-            ft_close_sem(*philo);
-            ft_unlink_sem();
-            if ((*philo)->data->pids)
-                free((*philo)->data->pids);
-            free((*philo)->data);
-        }
-        free(*philo);
-        *philo = NULL;
-    }
+	if (*philo)
+	{
+		ft_close_sem(*philo);
+		if ((*philo)->data->pids)
+		{
+			free((*philo)->data->pids);
+			(*philo)->data->pids = NULL;
+		}
+		ft_unlink_sem();
+		free(*philo);
+		*philo = NULL;
+	}
 }

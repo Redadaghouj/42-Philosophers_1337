@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:21 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/02 12:29:57 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/04 22:53:24 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 
 # define EXIT_FAILURE 1
 # define EXIT_SUCCESS 0
+# define EXIT_FULL_EAT 42
 # define MS_TO_US 1000
 # define MAX_PHILOS 200
 # define MIN_PHILOS 1
@@ -65,6 +66,7 @@ typedef struct s_philo
 int			ft_strlen(const char *s);
 int			ft_atoi(const char *nptr);
 pid_t		ft_fork(void);
+int			ft_strcmp(char *s1, char *s2);
 
 /* PARSING BONUS */
 int			parse_and_validate_args(int argc, char *argv[]);
@@ -75,7 +77,6 @@ int			start_simulation(t_philo *philo);
 /* STOP SIMULATION BONUS */
 int			check_death(t_philo *philo);
 void		*monitor_death(void	*arg);
-int			has_died(t_philo *philo);
 bool		get_is_dead(t_philo *philo);
 int			create_monitor_thread(t_philo *philo);
 

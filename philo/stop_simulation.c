@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 17:46:43 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/03 11:09:09 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/05 00:19:07 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ bool	get_is_dead(t_philo *philo)
 int	check_death(t_philo *philo)
 {
 	t_timestamp		inactive_time;
-	bool			is_dead;
 	int				eats;
 	int				nbr_of_philos;
 
@@ -34,10 +33,9 @@ int	check_death(t_philo *philo)
 	nbr_of_philos = philo->data->nbr_of_philos;
 	pthread_mutex_unlock(&philo->data->meal_mutex);
 	inactive_time = get_current_time() - philo->last_meal_time;
-	is_dead = get_is_dead(philo);
 	if (inactive_time >= philo->data->time_to_die || eats == nbr_of_philos)
 	{
-		if (!is_dead)
+		if (!get_is_dead(philo))
 		{
 			if (philo->data->must_eats == -1)
 				print_state(philo, "died");
@@ -46,35 +44,22 @@ int	check_death(t_philo *philo)
 			pthread_mutex_unlock(&philo->data->death_mutex);
 		}
 	}
-	is_dead = get_is_dead(philo);
-	return (is_dead);
+	return (get_is_dead(philo));
 }
 
 void	monitor_death(t_philo	*philo)
 {
 	int		i;
-	int		nbr;
 
-	nbr = philo->data->nbr_of_philos;
 	while (true)
 	{
 		i = 0;
-		while (i < nbr)
+		while (i < philo->data->nbr_of_philos)
 		{
 			if (check_death(&philo[i]))
 				return ;
 			i++;
 		}
-		usleep(500);
+		usleep(100);
 	}
-}
-
-int	has_died(t_philo *philo)
-{
-	bool	is_dead;
-
-	is_dead = get_is_dead(philo);
-	if (is_dead)
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
 }

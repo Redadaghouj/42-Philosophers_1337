@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:29 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/02 12:30:13 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/05 00:09:27 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,23 +45,20 @@ void	ft_usleep(t_timestamp time, t_philo *philo)
 		if (is_dead)
 			break ;
 		check_death(philo);
-		usleep(100);
+		usleep(500);
 	}
 }
 
 void	print_state(t_philo *philo, char *state)
 {
-	t_timestamp	time;
-	bool		is_dead;
-
-	is_dead = get_is_dead(philo);
-	if (!is_dead)
+	if (!get_is_dead(philo))
 	{
-		time = get_current_time() - philo->data->start_time;
 		sem_wait(philo->data->print_sem);
-		if (!is_dead)
-			printf("%-5lu %-3d %s\n", time, philo->id, state);
-		sem_post(philo->data->print_sem);
+		if (!get_is_dead(philo))
+			printf("%-4lu %-3d %s\n", get_current_time()
+				- philo->data->start_time, philo->id, state);
+		if (ft_strcmp(state, "died") != 0)
+			sem_post(philo->data->print_sem);
 	}
 }
 
@@ -75,6 +72,9 @@ void	must_eats(t_philo *philo)
 		{
 			philo->data->all_eats++;
 			philo->finished = true;
+			sem_post(philo->data->meal_sem);
+			put_down_forks(philo);
+			exit(EXIT_FULL_EAT);
 		}
 	}
 	sem_post(philo->data->meal_sem);
