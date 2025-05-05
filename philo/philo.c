@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 09:28:08 by reda              #+#    #+#             */
-/*   Updated: 2025/05/04 18:36:58 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/05 10:59:54 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	cleanup(t_philo **philo)
 	}
 }
 
-void	init_shared_data(char *argv[], t_data *data, int must_eats)
+int	init_data(char *argv[], t_data *data, int must_eats)
 {
 	int	i;
 
@@ -41,6 +41,8 @@ void	init_shared_data(char *argv[], t_data *data, int must_eats)
 	data->nbr_of_philos = ft_atoi(argv[0]);
 	data->forks = (pthread_mutex_t *)malloc(data->nbr_of_philos
 			* sizeof(pthread_mutex_t));
+	if (!data->forks)
+		return (EXIT_FAILURE);
 	data->time_to_die = ft_atoi(argv[1]);
 	data->time_to_eat = ft_atoi(argv[2]);
 	data->time_to_sleep = ft_atoi(argv[3]);
@@ -55,6 +57,7 @@ void	init_shared_data(char *argv[], t_data *data, int must_eats)
 		data->must_eats = ft_atoi(argv[4]);
 	else
 		data->must_eats = -1;
+	return (EXIT_SUCCESS);
 }
 
 int	init_philo(t_philo **philo, t_data *data)
@@ -85,8 +88,7 @@ int	setup_philos(t_data *data, t_philo **philo, int argc, char *argv[])
 		print_error("Error: At least one argument is not valid.\n");
 		return (EXIT_FAILURE);
 	}
-	init_shared_data(argv + 1, data, (argc == 6));
-	if (init_philo(philo, data))
+	if (init_data(argv + 1, data, (argc == 6)) || init_philo(philo, data))
 	{
 		print_error("Error: Malloc failed.\n");
 		return (EXIT_FAILURE);

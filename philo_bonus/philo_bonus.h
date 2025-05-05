@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:21 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/04 22:53:24 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/05 10:48:02 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int			check_death(t_philo *philo);
 void		*monitor_death(void	*arg);
 bool		get_is_dead(t_philo *philo);
 int			create_monitor_thread(t_philo *philo);
+void		reap_and_kill_children(t_philo *philo);
 
 /* LIFE_CYCLE BONUS */
 void		pick_up_forks(t_philo *philo);

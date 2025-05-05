@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:40 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/05 00:21:18 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/05 10:56:58 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ void	routine(t_philo	*philo)
 {
 	if (philo->data->nbr_of_philos == 1)
 		one_fork_available(philo);
-	// if (philo->id % 2 == 0)
-	// 	usleep(500);
-	// if (philo->data->nbr_of_philos > 1)
-	// 	create_monitor_thread(philo);
+	if (philo->id % 2 == 0)
+		usleep(1000);
+	if (philo->data->nbr_of_philos > 1)
+		create_monitor_thread(philo);
 	while (!get_is_dead(philo))
 	{
 		pick_up_forks(philo);
@@ -45,7 +45,6 @@ void	routine(t_philo	*philo)
 int	start_simulation(t_philo *philo)
 {
 	int	i;
-	int	status;
 
 	i = -1;
 	philo->data->start_time = get_current_time();
@@ -57,20 +56,10 @@ int	start_simulation(t_philo *philo)
 			routine(&philo[i]);
 		else if (philo->data->pids[i] < 0)
 		{
-			puts("---Fork failed---\n");
+			print_error("Error: Fork Failed\n");
 			return (EXIT_FAILURE);
 		}
 	}
-	i = -1;
-	while (wait(&status) != -1)
-	{
-		if (WEXITSTATUS(status) == EXIT_SUCCESS)
-		{
-			while (++i < philo->data->nbr_of_philos)
-				kill(philo->data->pids[i], SIGKILL);
-		}
-	}
-	while (wait(NULL) != -1)
-		;
+	reap_and_kill_children(philo);
 	return (EXIT_SUCCESS);
 }

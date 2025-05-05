@@ -6,11 +6,27 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:51 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/05 00:21:32 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/05 11:06:23 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
+
+void	reap_and_kill_children(t_philo *philo)
+{
+	int	i;
+	int	status;
+
+	i = -1;
+	while (wait(&status) != -1)
+	{
+		if (WEXITSTATUS(status) == EXIT_SUCCESS)
+		{
+			while (++i < philo->data->nbr_of_philos)
+				kill(philo->data->pids[i], SIGKILL);
+		}
+	}
+}
 
 bool	get_is_dead(t_philo *philo)
 {
@@ -25,7 +41,6 @@ bool	get_is_dead(t_philo *philo)
 int	check_death(t_philo *philo)
 {
 	t_timestamp		inactive_time;
-	bool			is_dead;
 	int				eats;
 	int				nbr_of_philos;
 
@@ -34,10 +49,9 @@ int	check_death(t_philo *philo)
 	nbr_of_philos = philo->data->nbr_of_philos;
 	sem_post(philo->data->meal_sem);
 	inactive_time = get_current_time() - philo->last_meal_time;
-	is_dead = get_is_dead(philo);
 	if (inactive_time >= philo->data->time_to_die || eats == nbr_of_philos)
 	{
-		if (!is_dead)
+		if (!get_is_dead(philo))
 		{
 			if (philo->data->must_eats == -1)
 				print_state(philo, "died");
@@ -46,25 +60,18 @@ int	check_death(t_philo *philo)
 			sem_post(philo->data->death_sem);
 		}
 	}
-	is_dead = get_is_dead(philo);
-	return (is_dead);
+	return (get_is_dead(philo));
 }
 
 void	*monitor_death(void	*arg)
 {
 	t_philo	*philo;
-	int		i;
 
 	philo = (t_philo *) arg;
 	while (true)
 	{
-		i = 0;
-		while (i < philo->data->nbr_of_philos)
-		{
-			if (check_death(&philo[i]))
-				return (NULL);
-			i++;
-		}
+		if (check_death(philo))
+			return (NULL);
 		usleep(500);
 	}
 	return (NULL);
@@ -79,6 +86,6 @@ int	create_monitor_thread(t_philo *philo)
 		print_error("Error: Failed to create thread.\n");
 		return (EXIT_FAILURE);
 	}
-	pthread_join(thread, NULL);
+	pthread_detach(thread);
 	return (EXIT_SUCCESS);
 }

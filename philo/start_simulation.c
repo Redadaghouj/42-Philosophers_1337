@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 18:03:21 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/04 23:21:41 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/05 10:29:33 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,14 @@ void	*routine(void *arg)
 	if (philo->data->nbr_of_philos == 1)
 		return (one_fork_available(philo));
 	if (philo->id % 2 == 0)
-		usleep(500);
-	while (true)
+		usleep(1000);
+	while (!get_is_dead(philo))
 	{
 		pick_up_forks(philo);
 		eat(philo);
 		put_down_forks(philo);
 		sleep_philo(philo);
 		think(philo);
-		if (get_is_dead(philo))
-			break ;
 	}
 	return (NULL);
 }

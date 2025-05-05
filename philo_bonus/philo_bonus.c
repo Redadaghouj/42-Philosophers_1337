@@ -6,13 +6,25 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:59:42 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/05 00:20:46 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/05 11:02:24 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int	init_shared_data(char *argv[], t_data *data, int must_eats)
+int	init_semaphores(t_data *data)
+{
+	data->forks_sem = sem_open(FORKS_SEM, O_CREAT, 0644, data->nbr_of_philos);
+	data->print_sem = sem_open(PRINT_SEM, O_CREAT, 0644, 1);
+	data->death_sem = sem_open(DEATH_SEM, O_CREAT, 0644, 1);
+	data->meal_sem = sem_open(MEAL_SEM, O_CREAT, 0644, 1);
+	if (data->forks_sem == SEM_FAILED || data->print_sem == SEM_FAILED
+		|| data->death_sem == SEM_FAILED || data->meal_sem == SEM_FAILED)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+}
+
+int	init_data(char *argv[], t_data *data, int must_eats)
 {
 	int	i;
 
@@ -24,12 +36,9 @@ int	init_shared_data(char *argv[], t_data *data, int must_eats)
 	data->death_happened = false;
 	data->all_eats = 0;
 	data->pids = (pid_t *)malloc(sizeof(pid_t) * data->nbr_of_philos);
-	data->forks_sem = sem_open(FORKS_SEM, O_CREAT, 0644, data->nbr_of_philos);
-	data->print_sem = sem_open(PRINT_SEM, O_CREAT, 0644, 1);
-	data->death_sem = sem_open(DEATH_SEM, O_CREAT, 0644, 1);
-	data->meal_sem = sem_open(MEAL_SEM, O_CREAT, 0644, 1);
-	if (data->forks_sem == SEM_FAILED || data->print_sem == SEM_FAILED
-		|| data->death_sem == SEM_FAILED || data->meal_sem == SEM_FAILED)
+	if (!data->pids)
+		return (EXIT_FAILURE);
+	if (init_semaphores(data))
 		return (EXIT_FAILURE);
 	if (must_eats)
 		data->must_eats = ft_atoi(argv[4]);
@@ -64,12 +73,7 @@ int	setup_philos(t_data *data, t_philo **philo, int argc, char *argv[])
 		print_error("Error: At least one argument is not valid.\n");
 		return (EXIT_FAILURE);
 	}
-	if (init_shared_data(argv + 1, data, (argc == 6)))
-	{
-		cleanup(philo);
-		exit(EXIT_FAILURE);
-	}
-	if (init_philo(philo, data))
+	if (init_data(argv + 1, data, (argc == 6)) || init_philo(philo, data))
 	{
 		print_error("Error: Malloc failed.\n");
 		return (EXIT_FAILURE);
