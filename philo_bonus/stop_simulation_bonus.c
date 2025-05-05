@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:51 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/05 11:06:23 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/05 19:46:58 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,46 +15,53 @@
 void	reap_and_kill_children(t_philo *philo)
 {
 	int	i;
-	int	status;
 
 	i = -1;
-	while (wait(&status) != -1)
+	if (philo->data->must_eats != -1)
 	{
-		if (WEXITSTATUS(status) == EXIT_SUCCESS)
-		{
-			while (++i < philo->data->nbr_of_philos)
-				kill(philo->data->pids[i], SIGKILL);
-		}
+		while (++i < philo->data->nbr_of_philos)
+			sem_wait(philo->data->eats_sem);
 	}
+	else
+		waitpid(-1, NULL, 0);
+	i = -1;
+	while (++i < philo->data->nbr_of_philos)
+		kill(philo->data->pids[i], SIGKILL);
+	while (waitpid(-1, NULL, 0) != -1)
+		;
 }
 
 bool	get_is_dead(t_philo *philo)
 {
 	bool	is_dead;
+	int		i;
 
+	i = -1;
 	sem_wait(philo->data->death_sem);
 	is_dead = philo->data->death_happened;
 	sem_post(philo->data->death_sem);
+	if (is_dead)
+	{
+		while (++i < philo->data->nbr_of_philos)
+			sem_post(philo->data->eats_sem);
+	}
 	return (is_dead);
 }
 
 int	check_death(t_philo *philo)
 {
 	t_timestamp		inactive_time;
-	int				eats;
 	int				nbr_of_philos;
 
 	sem_wait(philo->data->meal_sem);
-	eats = philo->data->all_eats;
 	nbr_of_philos = philo->data->nbr_of_philos;
 	sem_post(philo->data->meal_sem);
 	inactive_time = get_current_time() - philo->last_meal_time;
-	if (inactive_time >= philo->data->time_to_die || eats == nbr_of_philos)
+	if (inactive_time >= philo->data->time_to_die)
 	{
 		if (!get_is_dead(philo))
 		{
-			if (philo->data->must_eats == -1)
-				print_state(philo, "died");
+			print_state(philo, "died");
 			sem_wait(philo->data->death_sem);
 			philo->data->death_happened = true;
 			sem_post(philo->data->death_sem);

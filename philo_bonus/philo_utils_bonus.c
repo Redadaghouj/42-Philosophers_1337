@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:29 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/05 10:57:50 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/05 19:34:14 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,8 @@ void	must_eats(t_philo *philo)
 		philo->meals_count++;
 		if (philo->meals_count >= philo->data->must_eats && !philo->finished)
 		{
-			philo->data->all_eats++;
 			philo->finished = true;
-			sem_post(philo->data->meal_sem);
-			put_down_forks(philo);
-			exit(EXIT_FULL_EAT);
+			sem_post(philo->data->eats_sem);
 		}
 	}
 	sem_post(philo->data->meal_sem);

@@ -7,7 +7,7 @@ RM := rm -f
 NAME := philo
 
 SRCS := philo.c philo_utils.c parser.c start_simulation.c stop_simulation.c life_cycle.c \
-		utils/ft_strlen.c utils/ft_atoi.c \
+		utils/ft_strlen.c utils/ft_atoi.c utils/ft_strcmp.c \
 
 
 OBJS := ${SRCS:.c=.o}

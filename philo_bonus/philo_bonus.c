@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:59:42 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/05 11:02:24 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/05 19:49:06 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@ int	init_semaphores(t_data *data)
 	data->print_sem = sem_open(PRINT_SEM, O_CREAT, 0644, 1);
 	data->death_sem = sem_open(DEATH_SEM, O_CREAT, 0644, 1);
 	data->meal_sem = sem_open(MEAL_SEM, O_CREAT, 0644, 1);
+	data->eats_sem = sem_open(EATS_SEM, O_CREAT, 0644, 0);
 	if (data->forks_sem == SEM_FAILED || data->print_sem == SEM_FAILED
-		|| data->death_sem == SEM_FAILED || data->meal_sem == SEM_FAILED)
+		|| data->death_sem == SEM_FAILED || data->meal_sem == SEM_FAILED
+		|| data->eats_sem == SEM_FAILED)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -34,10 +36,10 @@ int	init_data(char *argv[], t_data *data, int must_eats)
 	data->time_to_eat = ft_atoi(argv[2]);
 	data->time_to_sleep = ft_atoi(argv[3]);
 	data->death_happened = false;
-	data->all_eats = 0;
 	data->pids = (pid_t *)malloc(sizeof(pid_t) * data->nbr_of_philos);
 	if (!data->pids)
 		return (EXIT_FAILURE);
+	ft_unlink_sem();
 	if (init_semaphores(data))
 		return (EXIT_FAILURE);
 	if (must_eats)
@@ -86,7 +88,6 @@ int	main(int argc, char *argv[])
 	t_data	data;
 	t_philo	*philo;
 
-	ft_unlink_sem();
 	if (argc != 5 && argc != 6)
 	{
 		print_error("Error: Invalid number of arguments, Expected 5 or 6.\n");

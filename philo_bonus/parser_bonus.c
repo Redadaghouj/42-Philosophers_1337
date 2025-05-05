@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:59:49 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/04/30 17:59:51 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/05 13:13:40 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	parse_and_validate_args(int argc, char *argv[])
 	i = 1;
 	while (i < argc)
 	{
-		if (is_digit(argv[i]) || ft_atoi(argv[i]) == -1)
+		if (argv[i][0] == '\0' || is_digit(argv[i]) || ft_atoi(argv[i]) == -1)
 			return (EXIT_FAILURE);
 		i++;
 	}

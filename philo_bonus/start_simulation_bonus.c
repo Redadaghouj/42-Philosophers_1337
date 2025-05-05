@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:40 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/05 10:56:58 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/05 19:29:31 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ void	routine(t_philo	*philo)
 		put_down_forks(philo);
 		sleep_philo(philo);
 		think(philo);
-		if (philo->finished)
-			exit(EXIT_FULL_EAT);
 	}
 	exit(EXIT_SUCCESS);
 }
@@ -56,10 +54,11 @@ int	start_simulation(t_philo *philo)
 			routine(&philo[i]);
 		else if (philo->data->pids[i] < 0)
 		{
-			print_error("Error: Fork Failed\n");
+			print_error("Error: Fork failed\n");
 			return (EXIT_FAILURE);
 		}
 	}
 	reap_and_kill_children(philo);
+	sem_post(philo->data->print_sem);
 	return (EXIT_SUCCESS);
 }

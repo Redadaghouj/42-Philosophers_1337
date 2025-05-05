@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:21 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/05 10:48:02 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/05 18:23:30 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 
 # define EXIT_FAILURE 1
 # define EXIT_SUCCESS 0
-# define EXIT_FULL_EAT 42
 # define MS_TO_US 1000
 # define MAX_PHILOS 200
 # define MIN_PHILOS 1
@@ -33,13 +32,13 @@
 # define PRINT_SEM "/print_sem"
 # define DEATH_SEM "/death_sem"
 # define MEAL_SEM "/meal_sem"
+# define EATS_SEM "/eats_sem"
 
 typedef unsigned long	t_timestamp;
 
 typedef struct s_data
 {
 	int			nbr_of_philos;
-	int			all_eats;
 	int			must_eats;
 	bool		death_happened;
 	t_timestamp	time_to_die;
@@ -50,6 +49,7 @@ typedef struct s_data
 	sem_t		*forks_sem;
 	sem_t		*death_sem;
 	sem_t		*meal_sem;
+	sem_t		*eats_sem;
 	pid_t		*pids;
 }				t_data;
 

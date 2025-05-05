@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 18:03:21 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/05 10:29:33 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:48:39 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	start_simulation(t_philo *philo)
 	if (philo->data->nbr_of_philos > 1)
 		monitor_death(philo);
 	i = -1;
+	pthread_mutex_unlock(&philo->data->print_mutex);
 	while (++i < philo->data->nbr_of_philos)
 		pthread_join(philo[i].thread, NULL);
 	return (EXIT_SUCCESS);
