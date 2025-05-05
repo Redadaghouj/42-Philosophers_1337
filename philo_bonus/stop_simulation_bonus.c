@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:51 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/05 19:46:58 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/05 22:58:28 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	reap_and_kill_children(t_philo *philo)
 	if (philo->data->must_eats != -1)
 	{
 		while (++i < philo->data->nbr_of_philos)
-			sem_wait(philo->data->eats_sem);
+			sem_wait(philo->data->sem.eats_sem);
 	}
 	else
 		waitpid(-1, NULL, 0);
@@ -34,40 +34,34 @@ void	reap_and_kill_children(t_philo *philo)
 bool	get_is_dead(t_philo *philo)
 {
 	bool	is_dead;
-	int		i;
 
-	i = -1;
-	sem_wait(philo->data->death_sem);
+	sem_wait(philo->data->sem.death_sem);
 	is_dead = philo->data->death_happened;
-	sem_post(philo->data->death_sem);
-	if (is_dead)
-	{
-		while (++i < philo->data->nbr_of_philos)
-			sem_post(philo->data->eats_sem);
-	}
+	sem_post(philo->data->sem.death_sem);
 	return (is_dead);
 }
 
-int	check_death(t_philo *philo)
+void	check_death(t_philo *philo)
 {
 	t_timestamp		inactive_time;
 	int				nbr_of_philos;
 
-	sem_wait(philo->data->meal_sem);
+	sem_wait(philo->data->sem.meal_sem);
 	nbr_of_philos = philo->data->nbr_of_philos;
-	sem_post(philo->data->meal_sem);
+	sem_post(philo->data->sem.meal_sem);
 	inactive_time = get_current_time() - philo->last_meal_time;
 	if (inactive_time >= philo->data->time_to_die)
 	{
+		post_eats_sem(philo);
 		if (!get_is_dead(philo))
 		{
 			print_state(philo, "died");
-			sem_wait(philo->data->death_sem);
+			sem_wait(philo->data->sem.death_sem);
 			philo->data->death_happened = true;
-			sem_post(philo->data->death_sem);
+			sem_post(philo->data->sem.death_sem);
+			exit(EXIT_SUCCESS);
 		}
 	}
-	return (get_is_dead(philo));
 }
 
 void	*monitor_death(void	*arg)
@@ -77,9 +71,8 @@ void	*monitor_death(void	*arg)
 	philo = (t_philo *) arg;
 	while (true)
 	{
-		if (check_death(philo))
-			return (NULL);
-		usleep(500);
+		check_death(philo);
+		usleep(100);
 	}
 	return (NULL);
 }

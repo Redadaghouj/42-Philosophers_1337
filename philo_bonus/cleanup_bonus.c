@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 13:05:37 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/05 16:28:34 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/05 21:56:08 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 
 void	ft_close_sem(t_philo *philo)
 {
-	sem_close(philo->data->forks_sem);
-	sem_close(philo->data->print_sem);
-	sem_close(philo->data->death_sem);
-	sem_close(philo->data->meal_sem);
-	sem_close(philo->data->eats_sem);
+	t_sem	sem;
+
+	sem = philo->data->sem;
+	sem_close(sem.forks_sem);
+	sem_close(sem.print_sem);
+	sem_close(sem.death_sem);
+	sem_close(sem.meal_sem);
+	sem_close(sem.eats_sem);
 }
 
 void	ft_unlink_sem(void)
@@ -28,6 +31,18 @@ void	ft_unlink_sem(void)
 	sem_unlink(DEATH_SEM);
 	sem_unlink(MEAL_SEM);
 	sem_unlink(EATS_SEM);
+}
+
+void	post_eats_sem(t_philo *philo)
+{
+	int	i;
+
+	i = -1;
+	if (philo->data->must_eats != -1)
+	{
+		while (++i < philo->data->nbr_of_philos)
+			sem_post(philo->data->sem.eats_sem);
+	}
 }
 
 void	cleanup(t_philo **philo)

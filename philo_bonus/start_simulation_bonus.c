@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:40 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/05 19:29:31 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/05 21:46:14 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	one_fork_available(t_philo *philo)
 	print_state(philo, "has taken a fork");
 	ft_usleep(philo->data->time_to_die, philo);
 	print_state(philo, "died");
-	sem_post(philo->data->forks_sem);
+	sem_post(philo->data->sem.forks_sem);
 	exit(EXIT_SUCCESS);
 }
 
@@ -25,8 +25,6 @@ void	routine(t_philo	*philo)
 {
 	if (philo->data->nbr_of_philos == 1)
 		one_fork_available(philo);
-	if (philo->id % 2 == 0)
-		usleep(1000);
 	if (philo->data->nbr_of_philos > 1)
 		create_monitor_thread(philo);
 	while (!get_is_dead(philo))
@@ -59,6 +57,5 @@ int	start_simulation(t_philo *philo)
 		}
 	}
 	reap_and_kill_children(philo);
-	sem_post(philo->data->print_sem);
 	return (EXIT_SUCCESS);
 }

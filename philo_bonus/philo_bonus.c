@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:59:42 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/05 19:49:06 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/05 22:57:12 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,17 @@
 
 int	init_semaphores(t_data *data)
 {
-	data->forks_sem = sem_open(FORKS_SEM, O_CREAT, 0644, data->nbr_of_philos);
-	data->print_sem = sem_open(PRINT_SEM, O_CREAT, 0644, 1);
-	data->death_sem = sem_open(DEATH_SEM, O_CREAT, 0644, 1);
-	data->meal_sem = sem_open(MEAL_SEM, O_CREAT, 0644, 1);
-	data->eats_sem = sem_open(EATS_SEM, O_CREAT, 0644, 0);
-	if (data->forks_sem == SEM_FAILED || data->print_sem == SEM_FAILED
-		|| data->death_sem == SEM_FAILED || data->meal_sem == SEM_FAILED
-		|| data->eats_sem == SEM_FAILED)
+	int	philo_nbr;
+
+	philo_nbr = data->nbr_of_philos;
+	data->sem.forks_sem = sem_open(FORKS_SEM, O_CREAT, 0644, philo_nbr);
+	data->sem.print_sem = sem_open(PRINT_SEM, O_CREAT, 0644, 1);
+	data->sem.death_sem = sem_open(DEATH_SEM, O_CREAT, 0644, 1);
+	data->sem.meal_sem = sem_open(MEAL_SEM, O_CREAT, 0644, 1);
+	data->sem.eats_sem = sem_open(EATS_SEM, O_CREAT, 0644, 0);
+	if (data->sem.forks_sem == SEM_FAILED || data->sem.print_sem == SEM_FAILED
+		|| data->sem.death_sem == SEM_FAILED || data->sem.meal_sem == SEM_FAILED
+		|| data->sem.eats_sem == SEM_FAILED)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

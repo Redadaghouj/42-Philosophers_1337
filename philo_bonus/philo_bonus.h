@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:21 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/05 18:23:30 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/05 22:59:29 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,15 @@
 
 typedef unsigned long	t_timestamp;
 
+typedef struct s_sem
+{
+	sem_t		*print_sem;
+	sem_t		*forks_sem;
+	sem_t		*death_sem;
+	sem_t		*meal_sem;
+	sem_t		*eats_sem;
+}				t_sem;
+
 typedef struct s_data
 {
 	int			nbr_of_philos;
@@ -45,11 +54,7 @@ typedef struct s_data
 	t_timestamp	time_to_eat;
 	t_timestamp	time_to_sleep;
 	t_timestamp	start_time;
-	sem_t		*print_sem;
-	sem_t		*forks_sem;
-	sem_t		*death_sem;
-	sem_t		*meal_sem;
-	sem_t		*eats_sem;
+	t_sem		sem;
 	pid_t		*pids;
 }				t_data;
 
@@ -75,7 +80,7 @@ int			parse_and_validate_args(int argc, char *argv[]);
 int			start_simulation(t_philo *philo);
 
 /* STOP SIMULATION BONUS */
-int			check_death(t_philo *philo);
+void		check_death(t_philo *philo);
 void		*monitor_death(void	*arg);
 bool		get_is_dead(t_philo *philo);
 int			create_monitor_thread(t_philo *philo);
@@ -98,5 +103,6 @@ void		must_eats(t_philo *philo);
 /* CLEANUP */
 void		cleanup(t_philo **philo);
 void		ft_unlink_sem(void);
+void		post_eats_sem(t_philo *philo);
 
 #endif

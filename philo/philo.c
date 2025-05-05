@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/27 09:28:08 by reda              #+#    #+#             */
-/*   Updated: 2025/05/05 15:47:08 by mdaghouj         ###   ########.fr       */
+/*   Created: 2025/03/27 09:28:08 by mdaghouj          #+#    #+#             */
+/*   Updated: 2025/05/05 23:04:31 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,5 +116,3 @@ int	main(int argc, char *argv[])
 	cleanup(&philo);
 	return (EXIT_SUCCESS);
 }
-
-// 4 100 30 30 -> 
