@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 10:32:20 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/05 15:55:40 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/06 13:49:56 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,7 @@ t_timestamp	get_current_time(void)
 void	ft_usleep(t_timestamp time, t_philo *philo)
 {
 	t_timestamp		wake_up;
-	unsigned int	must_eats;
 
-	must_eats = philo->data->must_eats;
 	wake_up = get_current_time() + time;
 	while (get_current_time() < wake_up)
 	{
