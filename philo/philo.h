@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 09:28:34 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/05 23:04:11 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/06 16:27:34 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,14 @@
 
 typedef unsigned long	t_timestamp;
 
+typedef struct s_mutex
+{
+	pthread_mutex_t	print;
+	pthread_mutex_t	*forks;
+	pthread_mutex_t	death;
+	pthread_mutex_t	meal;
+}				t_mutex;
+
 typedef struct s_data
 {
 	int				nbr_of_philos;
@@ -39,10 +47,7 @@ typedef struct s_data
 	t_timestamp		time_to_eat;
 	t_timestamp		time_to_sleep;
 	t_timestamp		start_time;
-	pthread_mutex_t	print_mutex;
-	pthread_mutex_t	*forks;
-	pthread_mutex_t	death_mutex;
-	pthread_mutex_t	meal_mutex;
+	t_mutex			mutex;
 }				t_data;
 
 typedef struct s_philo

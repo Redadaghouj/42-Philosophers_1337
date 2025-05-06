@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 18:03:21 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/05 15:48:39 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/06 16:29:49 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void	*one_fork_available(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->data->forks[philo->right_fork]);
+	pthread_mutex_lock(&philo->data->mutex.forks[philo->right_fork]);
 	print_state(philo, "has taken a fork");
 	ft_usleep(philo->data->time_to_die, philo);
 	print_state(philo, "died");
-	pthread_mutex_unlock(&philo->data->forks[philo->right_fork]);
+	pthread_mutex_unlock(&philo->data->mutex.forks[philo->right_fork]);
 	return (NULL);
 }
 
@@ -60,7 +60,7 @@ int	start_simulation(t_philo *philo)
 	if (philo->data->nbr_of_philos > 1)
 		monitor_death(philo);
 	i = -1;
-	pthread_mutex_unlock(&philo->data->print_mutex);
+	pthread_mutex_unlock(&philo->data->mutex.print);
 	while (++i < philo->data->nbr_of_philos)
 		pthread_join(philo[i].thread, NULL);
 	return (EXIT_SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 09:28:08 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/05 23:04:31 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/06 16:30:55 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ void	cleanup(t_philo **philo)
 	{
 		while (i < (*philo)->data->nbr_of_philos)
 		{
-			pthread_mutex_destroy(&(*philo)->data->forks[i]);
+			pthread_mutex_destroy(&(*philo)->data->mutex.forks[i]);
 			i++;
 		}
-		pthread_mutex_destroy(&(*philo)->data->print_mutex);
-		pthread_mutex_destroy(&(*philo)->data->death_mutex);
-		pthread_mutex_destroy(&(*philo)->data->meal_mutex);
-		free((*philo)->data->forks);
+		pthread_mutex_destroy(&(*philo)->data->mutex.print);
+		pthread_mutex_destroy(&(*philo)->data->mutex.death);
+		pthread_mutex_destroy(&(*philo)->data->mutex.meal);
+		free((*philo)->data->mutex.forks);
 		free(*philo);
 		*philo = NULL;
 	}
@@ -39,20 +39,20 @@ int	init_data(char *argv[], t_data *data, int must_eats)
 
 	i = -1;
 	data->nbr_of_philos = ft_atoi(argv[0]);
-	data->forks = (pthread_mutex_t *)malloc(data->nbr_of_philos
+	data->mutex.forks = (pthread_mutex_t *)malloc(data->nbr_of_philos
 			* sizeof(pthread_mutex_t));
-	if (!data->forks)
+	if (!data->mutex.forks)
 		return (EXIT_FAILURE);
 	data->time_to_die = ft_atoi(argv[1]);
 	data->time_to_eat = ft_atoi(argv[2]);
 	data->time_to_sleep = ft_atoi(argv[3]);
 	data->death_happened = false;
 	data->all_eats = 0;
-	pthread_mutex_init(&data->print_mutex, NULL);
-	pthread_mutex_init(&data->death_mutex, NULL);
-	pthread_mutex_init(&data->meal_mutex, NULL);
+	pthread_mutex_init(&data->mutex.print, NULL);
+	pthread_mutex_init(&data->mutex.death, NULL);
+	pthread_mutex_init(&data->mutex.meal, NULL);
 	while (++i < data->nbr_of_philos)
-		pthread_mutex_init(&data->forks[i], NULL);
+		pthread_mutex_init(&data->mutex.forks[i], NULL);
 	if (must_eats)
 		data->must_eats = ft_atoi(argv[4]);
 	else

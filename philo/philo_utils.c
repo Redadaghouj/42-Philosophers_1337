@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 10:32:20 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/06 13:49:56 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/06 16:30:55 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,18 +48,18 @@ void	print_state(t_philo *philo, char *state)
 {
 	if (!get_is_dead(philo))
 	{
-		pthread_mutex_lock(&philo->data->print_mutex);
+		pthread_mutex_lock(&philo->data->mutex.print);
 		if (!get_is_dead(philo))
 			printf("%-5lu %-4d %s\n", get_current_time()
 				- philo->data->start_time, philo->id, state);
 		if (ft_strcmp(state, "died") != 0)
-			pthread_mutex_unlock(&philo->data->print_mutex);
+			pthread_mutex_unlock(&philo->data->mutex.print);
 	}
 }
 
 void	must_eats(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->data->meal_mutex);
+	pthread_mutex_lock(&philo->data->mutex.meal);
 	if (philo->data->must_eats > -1)
 	{
 		philo->meals_count++;
@@ -69,5 +69,5 @@ void	must_eats(t_philo *philo)
 			philo->finished = true;
 		}
 	}
-	pthread_mutex_unlock(&philo->data->meal_mutex);
+	pthread_mutex_unlock(&philo->data->mutex.meal);
 }
