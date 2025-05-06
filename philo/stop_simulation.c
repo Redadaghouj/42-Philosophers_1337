@@ -30,8 +30,8 @@ int	check_death(t_philo *philo)
 
 	pthread_mutex_lock(&philo->data->meal_mutex);
 	eats = philo->data->all_eats;
-	nbr_of_philos = philo->data->nbr_of_philos;
 	pthread_mutex_unlock(&philo->data->meal_mutex);
+	nbr_of_philos = philo->data->nbr_of_philos;
 	inactive_time = get_current_time() - philo->last_meal_time;
 	if (inactive_time >= philo->data->time_to_die || eats == nbr_of_philos)
 	{
