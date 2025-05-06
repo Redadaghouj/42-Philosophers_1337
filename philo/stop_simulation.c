@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 17:46:43 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/05 10:34:28 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/06 12:06:38 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ int	check_death(t_philo *philo)
 	{
 		if (!get_is_dead(philo))
 		{
-			if (philo->data->must_eats == -1)
-				print_state(philo, "died");
+			print_state(philo, "died");
 			pthread_mutex_lock(&philo->data->death_mutex);
 			philo->data->death_happened = true;
 			pthread_mutex_unlock(&philo->data->death_mutex);
