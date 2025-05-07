@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 09:28:08 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/07 09:58:40 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/07 10:01:57 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	init_mutexes(t_data *data)
 
 int	init_data(char *argv[], t_data *data, int must_eats)
 {
-
 	data->nbr_of_philos = ft_atoi(argv[0]);
 	data->mutex.forks = (pthread_mutex_t *)malloc(data->nbr_of_philos
 			* sizeof(pthread_mutex_t));
