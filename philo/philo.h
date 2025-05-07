@@ -6,7 +6,7 @@
 /*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 09:28:34 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/06 16:27:34 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/07 09:59:47 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,8 @@ void		ft_usleep(t_timestamp time, t_philo *philo);
 void		print_state(t_philo *philo, char *state);
 int			print_error(char *msg);
 void		must_eats(t_philo *philo);
+
+/* CLEANUP */
+void		cleanup(t_philo **philo);
 
 #endif
