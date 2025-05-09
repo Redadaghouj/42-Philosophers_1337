@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   stop_simulation_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: reda <reda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:51 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/05 22:58:28 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/09 18:41:19 by reda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,7 @@ bool	get_is_dead(t_philo *philo)
 void	check_death(t_philo *philo)
 {
 	t_timestamp		inactive_time;
-	int				nbr_of_philos;
 
-	sem_wait(philo->data->sem.meal_sem);
-	nbr_of_philos = philo->data->nbr_of_philos;
-	sem_post(philo->data->sem.meal_sem);
 	inactive_time = get_current_time() - philo->last_meal_time;
 	if (inactive_time >= philo->data->time_to_die)
 	{

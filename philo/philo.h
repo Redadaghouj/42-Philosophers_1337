@@ -16,7 +16,6 @@
 # include <pthread.h>
 # include <sys/time.h>
 # include <stdbool.h>
-# include <strings.h>
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>

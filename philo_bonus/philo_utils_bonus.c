@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_utils_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: reda <reda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:29 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/05 22:27:55 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/09 18:39:57 by reda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,7 @@ t_timestamp	get_current_time(void)
 void	ft_usleep(t_timestamp time, t_philo *philo)
 {
 	t_timestamp		wake_up;
-	unsigned int	must_eats;
 
-	must_eats = philo->data->must_eats;
 	wake_up = get_current_time() + time;
 	while (get_current_time() < wake_up)
 	{
