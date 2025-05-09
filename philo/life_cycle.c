@@ -14,9 +14,19 @@
 
 void	pick_up_forks(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->data->mutex.forks[philo->right_fork]);
+	int	first;
+	int	second;
+
+	first = philo->left_fork;
+	second = philo->right_fork;
+	if (first > second)
+	{
+		first = philo->right_fork;
+		second = philo->left_fork;
+	}
+	pthread_mutex_lock(&philo->data->mutex.forks[first]);
 	print_state(philo, "has taken a fork");
-	pthread_mutex_lock(&philo->data->mutex.forks[philo->left_fork]);
+	pthread_mutex_lock(&philo->data->mutex.forks[second]);
 	print_state(philo, "has taken a fork");
 }
 

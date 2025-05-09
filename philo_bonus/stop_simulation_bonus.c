@@ -6,7 +6,7 @@
 /*   By: reda <reda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:51 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/09 18:41:19 by reda             ###   ########.fr       */
+/*   Updated: 2025/05/09 23:53:55 by reda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@ void	check_death(t_philo *philo)
 {
 	t_timestamp		inactive_time;
 
+	sem_wait(philo->data->sem.meal_sem);
 	inactive_time = get_current_time() - philo->last_meal_time;
+	sem_post(philo->data->sem.meal_sem);
 	if (inactive_time >= philo->data->time_to_die)
 	{
 		post_eats_sem(philo);
