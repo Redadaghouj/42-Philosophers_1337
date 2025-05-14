@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start_simulation_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reda <reda@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:40 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/14 16:49:18 by reda             ###   ########.fr       */
+/*   Updated: 2025/05/14 21:23:36 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	routine(t_philo	*philo)
 		put_down_forks(philo);
 		sleep_philo(philo);
 	}
+	exit(EXIT_SUCCESS);
 }
 
 int	start_simulation(t_philo *philo)

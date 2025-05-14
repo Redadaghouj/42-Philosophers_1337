@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   stop_simulation_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: reda <reda@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:51 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/14 17:10:50 by reda             ###   ########.fr       */
+/*   Updated: 2025/05/14 21:23:35 by mdaghouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void	check_death(t_philo *philo)
 			sem_wait(philo->data->sem.death_sem);
 			philo->data->death_happened = true;
 			sem_post(philo->data->sem.death_sem);
-			ft_close_sem(philo);
 			exit(EXIT_SUCCESS);
 		}
 	}
