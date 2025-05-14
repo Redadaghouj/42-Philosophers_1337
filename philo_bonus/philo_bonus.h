@@ -6,7 +6,7 @@
 /*   By: reda <reda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:21 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/09 18:44:40 by reda             ###   ########.fr       */
+/*   Updated: 2025/05/14 16:47:17 by reda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ typedef struct s_philo
 /* UTILS BONUS */
 int			ft_strlen(const char *s);
 int			ft_atoi(const char *nptr);
-pid_t		ft_fork(void);
 int			ft_strcmp(char *s1, char *s2);
 
 /* PARSING BONUS */
@@ -105,5 +104,6 @@ void		must_eats(t_philo *philo);
 void		cleanup(t_philo **philo);
 void		ft_unlink_sem(void);
 void		post_eats_sem(t_philo *philo);
+void		ft_close_sem(t_philo *philo);
 
 #endif

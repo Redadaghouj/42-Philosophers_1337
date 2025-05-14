@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start_simulation_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdaghouj <mdaghouj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: reda <reda@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:40 by mdaghouj          #+#    #+#             */
-/*   Updated: 2025/05/05 21:46:14 by mdaghouj         ###   ########.fr       */
+/*   Updated: 2025/05/14 16:49:18 by reda             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,12 @@ void	routine(t_philo	*philo)
 		create_monitor_thread(philo);
 	while (!get_is_dead(philo))
 	{
+		think(philo);
 		pick_up_forks(philo);
 		eat(philo);
 		put_down_forks(philo);
 		sleep_philo(philo);
-		think(philo);
 	}
-	exit(EXIT_SUCCESS);
 }
 
 int	start_simulation(t_philo *philo)
