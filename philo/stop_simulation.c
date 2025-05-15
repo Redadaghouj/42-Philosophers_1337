@@ -37,7 +37,8 @@ int	check_death(t_philo *philo)
 	{
 		if (!get_is_dead(philo))
 		{
-			print_state(philo, "died");
+			if (eats != nbr_of_philos)
+				print_state(philo, "died");
 			pthread_mutex_lock(&philo->data->mutex.death);
 			philo->data->death_happened = true;
 			pthread_mutex_unlock(&philo->data->mutex.death);

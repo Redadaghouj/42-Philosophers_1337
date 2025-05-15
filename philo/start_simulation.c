@@ -61,7 +61,6 @@ int	start_simulation(t_philo *philo)
 	if (philo->data->nbr_of_philos > 1)
 		monitor_death(philo);
 	i = -1;
-	pthread_mutex_unlock(&philo->data->mutex.print);
 	while (++i < philo->data->nbr_of_philos)
 		pthread_join(philo[i].thread, NULL);
 	return (EXIT_SUCCESS);
