@@ -14,6 +14,7 @@
 
 void	*one_fork_available(t_philo *philo)
 {
+	think(philo);
 	pthread_mutex_lock(&philo->data->mutex.forks[philo->right_fork]);
 	print_state(philo, "has taken a fork");
 	ft_usleep(philo->data->time_to_die, philo);
@@ -33,11 +34,11 @@ void	*routine(void *arg)
 		usleep(1000);
 	while (!get_is_dead(philo))
 	{
+		think(philo);
 		pick_up_forks(philo);
 		eat(philo);
 		put_down_forks(philo);
 		sleep_philo(philo);
-		think(philo);
 	}
 	return (NULL);
 }

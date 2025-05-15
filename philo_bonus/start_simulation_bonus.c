@@ -14,6 +14,7 @@
 
 void	one_fork_available(t_philo *philo)
 {
+	think(philo);
 	print_state(philo, "has taken a fork");
 	ft_usleep(philo->data->time_to_die, philo);
 	print_state(philo, "died");
